@@ -1,0 +1,15 @@
+.modal-search .modal-dialog { position: absolute; top: 0; left: 0; width: 100%; min-height: 100%; margin: 0; }
+.modal-search .modal-dialog .modal-content { position: absolute; top: 0; left: 0; width: 100%; min-height: 100%; box-shadow: none; border-radius: 0; background-clip: border-box; border: none; }
+.modal-search .modal-dialog .modal-content .modal-body { padding-top: 125px; }
+.modal-search .modal-dialog .modal-content .modal-body .input-group .form-control { padding: 15px 10px; font-size: 1.5rem; border: none; border-bottom: 1px solid #eeeeee; box-shadow: none; }
+.modal-search .modal-dialog .modal-content .modal-body .input-group .form-control:focus { outline: none; }
+@media (min-width: 768px) { .modal-search .modal-dialog .modal-content .modal-body .input-group .form-control { padding: 30px 10px; font-size: 4rem; } }
+.modal-search .modal-dialog .modal-content .modal-body .input-group .input-group-btn .btn { border: none; background: transparent; color: #000; font-size: 2rem; }
+.modal-search .modal-dialog .modal-content .modal-body .input-group .input-group-btn .btn:focus { outline: none; }
+.modal-search .modal-dialog .modal-content .modal-body .input-group .input-group-btn .btn:hover { opacity: 0.5; }
+@media (min-width: 768px) { .modal-search .modal-dialog .modal-content .modal-body .input-group .input-group-btn .btn { font-size: 3rem; } }
+.modal-search .close-modal { position: absolute; width: 75px; height: 75px; background-color: transparent; top: 25px; right: 25px; cursor: pointer; }
+.modal-search .close-modal:hover { opacity: 0.3; }
+.modal-search .close-modal .lr { height: 50px; width: 1px; margin-left: 35px; background-color: #b84d45; transform: rotate(45deg); -ms-transform: rotate(45deg); /* IE 9 */ -webkit-transform: rotate(45deg); /* Safari and Chrome */ z-index: 1051; }
+.modal-search .close-modal .lr .rl { height: 50px; width: 1px; background-color: #b84d45; transform: rotate(90deg); -ms-transform: rotate(90deg); /* IE 9 */ -webkit-transform: rotate(90deg); /* Safari and Chrome */ z-index: 1052; }
+.modal { overflow-y: auto; }

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+				   assembly="LiquidTrouse.Core.Blog.DataAccess"
+				   namespace="LiquidTrouse.Core.Blog.DataAccess.Domain">
+  <class name="Hit" table="HIT" lazy="false" >
+    <id name="HitId" column="HIT_ID" type="Int32" unsaved-value="0">
+      <generator class="native" >
+        <param name="sequence">SEQ_Hit</param>
+      </generator>
+    </id>
+    <property name="ResourceId" column="RESOURCE_ID" not-null="true" unique="false" type="Int32" />
+    <property name="IPAddress" column="IP_ADDRESS" not-null="true" unique="false" type="string" />
+    <property name="HitType" column="HIT_TYPE" not-null="true" unique="false" type="LiquidTrouse.Core.Blog.DataAccess.Domain.HitType, LiquidTrouse.Core.Blog.DataAccess" />    
+    <property name="CreationDatetime" column="CREATION_DATETIME" not-null="true" unique="false" type="DateTime"/>
+  </class>
+</hibernate-mapping>

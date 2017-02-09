@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+				   assembly="LiquidTrouse.Core.Blog.DataAccess"
+				   namespace="LiquidTrouse.Core.Blog.DataAccess.Domain">
+  <class name="Article" table="ARTICLE" lazy="false">
+    <id name="ArticleId" column="ARTICLE_ID" type="Int32" unsaved-value="0">
+      <generator class="native" >
+        <param name="sequence">SEQ_Article</param>
+      </generator>
+    </id>
+    <property name="UserId" column="USER_ID" not-null="true" unique="false" type="string" />
+    <property name="Title" column="TITLE" not-null="true" unique="false" type="string" />
+    <property name="Content" column="CONTENT" not-null="true" unique="false" type="StringClob" />
+    <property name="UrlTitle" column="URL_TILE" not-null="true" unique="false" type="string" />
+    <property name="CoverImageUrl" column="COVER_IMAGE_URL" not-null="true" unique="false" type="string" />
+    <property name="CreationDatetime" column="CREATION_DATETIME" not-null="true" unique="false" type="DateTime" />
+    <property name="LastModifiedDatetime" column="LAST_MODIFIED_DATETIME" not-null="true" unique="false" type="DateTime" />
+    <property name="Status" column="STATUS" not-null="true" unique="false" type="LiquidTrouse.Core.Blog.DataAccess.Domain.ArticleStatus, LiquidTrouse.Core.Blog.DataAccess" />
+    <bag name="Tags" table="ARTICLE_TAG_EDGE" inverse="false" lazy="true" fetch="join">
+      <key column="ARTICLE_ID" />
+      <many-to-many column="TAG_ID" class="Tag" />    
+    </bag>
+  </class>
+</hibernate-mapping>

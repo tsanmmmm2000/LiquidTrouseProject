@@ -1,0 +1,182 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="default.master.cs" Inherits="_default" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Liquid Trouse 電音誌</title>
+    <link rel="icon" href="image/logo.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="image/logo.ico" type="image/x-icon" />
+    <link rel="bookmark" href="image/logo.ico" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Pacifico" />
+    <link rel="stylesheet" type="text/css" href="<%=Request.ApplicationPath%>/bootstrap/css/bootstrap.min.css<%="" + Global.Quid%>" />
+    <link rel="stylesheet" type="text/css" href="<%=Request.ApplicationPath%>/bootstrap/css/clean-blog.css<%="" + Global.Quid%>" />
+    <link rel="stylesheet" type="text/css" href="<%=Request.ApplicationPath%>/bootstrap/css/modal.css<%="" + Global.Quid%>" />
+    <script type="text/javascript" src="<%=Request.ApplicationPath%>/js/jquery-1.11.2.js<%="" + Global.Quid%>""></script>
+    <script type="text/javascript" src="<%=Request.ApplicationPath%>/bootstrap/js/bootstrap.min.js<%=Global.Quid %>"></script>
+    <script type="text/javascript" src="<%=Request.ApplicationPath%>/bootstrap/js/clean-blog.min.js<%=Global.Quid %>"></script>
+    <script type="text/javascript" src="<%=Request.ApplicationPath%>/js/utility.js<%="" + Global.Quid%>""></script>        
+    <script type="text/javascript">
+        var rootUrl = "<%=Request.ApplicationPath%>";
+        var tagServiceUrl = rootUrl + "/service/ajaxtagservice.aspx";
+
+        $(document).ready(function () {
+
+            $(document).keypress(function (e) {
+                if (e.which == 13) {
+                    $("#btn-search").click();
+                }
+            });
+
+            $("#btn-search").click(function () {
+                var keyword = $("#keyword").val();
+                if (keyword != null && keyword != "") {
+                    window.location.href = rootUrl + "/search/keyword/" + LambdaEncode(keyword);
+                }
+            });
+
+            $("#search").click(function () {
+                $("#search-modal").slideDown(500);
+                $("#keyword").focus();
+            });
+
+            $("#tag").click(function () {
+                $("#tag-modal").slideDown(500);	
+                WriteAllTags();
+            });
+
+            $(".close-modal").click(function () {
+                $(".modal-search").slideUp(500);
+            });
+        });
+        function WriteAllTags() {
+            var param = "cmd=getall";
+            $.post(tagServiceUrl, param, function (data) {
+                var result = $.parseJSON(data);
+                if (result.Success) {
+                    var html = "";
+                    $.each(result.Data, function (i, n) {
+                        html += "<button class=\"btn btn-primary btn-tag\" type=\"button\" style=\"margin: 5px 5px;\">";
+                        html += n.DisplayName;
+                        html += "&nbsp;<span class=\"badge\">";
+                        html += n.UsedCount;
+                        html += "</span>";
+                        html += "</button>";
+                    });
+                    $("#all-tag-section").html(html);
+                    $(".btn-tag").click(function () {
+                        var text = $(this).text();
+                        var index = text.lastIndexOf(" ");
+                        var tagDisplayName = text.substring(0, index);
+                        window.location.href = rootUrl + "/search/tag/" + LambdaEncode($.trim(tagDisplayName));
+                    });
+                } else {
+                    AlertMessage(result);
+                }
+            });
+        }
+    </script>
+    <style type="text/css">
+        h1 {
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" target="_blank" href="https://www.facebook.com/LiquidTrouse" style="font-family:Pacifico;"><span class="glyphicon glyphicon-tint" aria-hidden="true"></span>&nbsp;Liquid Trouse</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <% if (IsAdmin) { %>
+                    <li>
+                        <a href="<%=Request.ApplicationPath %>/management/list" id="management"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;管理</a>
+                    </li>
+                    <% } %>
+                    <li>
+                        <a href="<%=Request.ApplicationPath %>/default" id="home"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;首頁</a>
+                    </li>
+                    <li>
+                        <a href="<%=Request.ApplicationPath %>/about" id="about"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;關於我</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" id="tag"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;標籤</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" id="search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;搜尋</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="wrapper">
+        <div class="alert alert-danger" role="alert" style="display:none"></div>       
+        <form id="form1" runat="server">
+        <div>		
+            <asp:ContentPlaceHolder id="cp" runat="server"></asp:ContentPlaceHolder>
+        </div>			
+        </form>
+    </div>
+    <div class="container">
+        <hr>
+        <footer>
+            <div class="row">
+                <div class="col-lg-12" style="text-align: center;">
+                    <p>Copyright &copy; 2017 Liquid Trouse 電音誌.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div id="search-modal" class="modal-search modal" tabindex="-1" role="dialog" style="display: none; padding-right: 17px;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="close-modal" data-dismiss="modal">
+                        <div class="lr">
+                            <div class="rl"></div>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="input-group input-group-lg">
+                            <input id="keyword" type="text" class="form-control" placeholder="搜尋...">
+                            <div class="input-group-btn">
+                                <button id="btn-search" class="btn btn-default" type="button">
+                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="tag-modal" class="modal-search modal" tabindex="-1" role="dialog" style="display: none; padding-right: 17px;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="close-modal" data-dismiss="modal">
+                        <div class="lr">
+                            <div class="rl"></div>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div id="all-tag-section"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

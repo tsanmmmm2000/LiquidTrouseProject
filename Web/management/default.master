@@ -1,0 +1,32 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="default.master.cs" Inherits="management_default" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Liquid Trouse 電音誌</title>
+    <link rel="icon" href="../image/logo.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="../image/logo.ico" type="image/x-icon" />
+    <link rel="bookmark" href="image/logo.ico" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" href="<%=Request.ApplicationPath%>/bootstrap/css/bootstrap.min.css<%="" + Global.Quid%>" />
+    <script type="text/javascript" src="<%=Request.ApplicationPath%>/js/jquery-1.11.2.js<%="" + Global.Quid%>""></script>
+    <script type="text/javascript" src="<%=Request.ApplicationPath%>/bootstrap/js/bootstrap.min.js<%=Global.Quid %>"></script>
+    <script type="text/javascript" src="<%=Request.ApplicationPath%>/js/utility.js<%="" + Global.Quid%>""></script>        	
+    <style type="text/css">
+        .btn {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="alert alert-danger" role="alert" style="display:none"></div>
+    <form id="form1" runat="server">
+    <div>
+        <asp:ContentPlaceHolder id="cp" runat="server"></asp:ContentPlaceHolder>
+    </div>
+    </form>
+</body>
+</html>

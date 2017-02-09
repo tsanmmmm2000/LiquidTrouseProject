@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" standalone="yes" ?>
+<users>
+	<user type="admin" userid="liquidtrouse"/>
+	<user type="guest" userid="guest" />
+</users>

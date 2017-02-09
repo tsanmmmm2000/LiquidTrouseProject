@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FB75D401-1106-4D72-B566-16984BA92576}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LiquidTrouse.Core.Blog.Service</RootNamespace>
+    <AssemblyName>LiquidTrouse.Core.Blog.Service</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="LiquidTrouse.Core">
+      <HintPath>..\Lib\LiquidTrouse.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="LiquidTrouse.Core.AccountManager">
+      <HintPath>..\Lib\LiquidTrouse.Core.AccountManager.dll</HintPath>
+    </Reference>
+    <Reference Include="LiquidTrouse.Core.Blog.DataAccess">
+      <HintPath>..\Lib\LiquidTrouse.Core.Blog.DataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="Spring.Core">
+      <HintPath>..\Lib\Spring.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyVersionInfo.cs">
+      <Link>AssemblyVersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="DTOConverter\HitConverter.cs" />
+    <Compile Include="DTO\HitInfo.cs" />
+    <Compile Include="DTO\QueryPackage.cs" />
+    <Compile Include="IHitService.cs" />
+    <Compile Include="Impl\ArticleService.cs" />
+    <Compile Include="DTOConverter\ArticleConverter.cs" />
+    <Compile Include="DTOConverter\TagConverter.cs" />
+    <Compile Include="DTO\ArticleInfo.cs" />
+    <Compile Include="DTO\TagInfo.cs" />
+    <Compile Include="IArticleService.cs" />
+    <Compile Include="Impl\HitService.cs" />
+    <Compile Include="Impl\SearchService.cs" />
+    <Compile Include="Impl\TagService.cs" />
+    <Compile Include="ISearchService.cs" />
+    <Compile Include="ITagService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RepositoryFactory.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

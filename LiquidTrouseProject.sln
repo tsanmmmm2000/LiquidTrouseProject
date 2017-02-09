@@ -1,0 +1,83 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Web", "http://localhost:50554", "{8BC84F2E-90BB-4F09-8D0D-83A6F1304C66}"
+	ProjectSection(WebsiteProperties) = preProject
+		UseIISExpress = "true"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_50554"
+		Debug.AspNetCompiler.PhysicalPath = "Web\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_50554\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_50554"
+		Release.AspNetCompiler.PhysicalPath = "Web\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_50554\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		SlnRelativePath = "Web\"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiquidTrouse.Core", "LiquidTrouse.Core\LiquidTrouse.Core.csproj", "{5D3E7422-1432-4F55-961A-FF21E1F1C168}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiquidTrouse.Core.Globalization", "LiquidTrouse.Core.Globalization\LiquidTrouse.Core.Globalization.csproj", "{6D4DF9E0-C110-446F-B59D-554A69257FBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiquidTrouse.Core.AccountManager", "LiquidTrouse.Core.AccountManager\LiquidTrouse.Core.AccountManager.csproj", "{AB15D632-5C68-4503-B3F5-30AE27F747E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiquidTrouse.Core.AccountManager.Impl.Simple", "LiquidTrouse.Core.AccountManager.Impl.Simple\LiquidTrouse.Core.AccountManager.Impl.Simple.csproj", "{28F71093-C4A9-4754-8517-0E3F61B7A637}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiquidTrouse.Core.Blog.DataAccess", "LiquidTrouse.Core.Blog.DataAccess\LiquidTrouse.Core.Blog.DataAccess.csproj", "{D2D960B0-7E61-4BE3-A8EE-1558C3B285A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiquidTrouse.Core.Blog.DataAccess.Impl.NHibernate", "LiquidTrouse.Core.Blog.DataAccess.Impl.NHibernate\LiquidTrouse.Core.Blog.DataAccess.Impl.NHibernate.csproj", "{B8255C14-C00F-43A4-AE83-44FB1B278702}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiquidTrouse.Core.Blog.Service", "LiquidTrouse.Core.Blog.Service\LiquidTrouse.Core.Blog.Service.csproj", "{FB75D401-1106-4D72-B566-16984BA92576}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8BC84F2E-90BB-4F09-8D0D-83A6F1304C66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BC84F2E-90BB-4F09-8D0D-83A6F1304C66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BC84F2E-90BB-4F09-8D0D-83A6F1304C66}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BC84F2E-90BB-4F09-8D0D-83A6F1304C66}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{5D3E7422-1432-4F55-961A-FF21E1F1C168}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D3E7422-1432-4F55-961A-FF21E1F1C168}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D3E7422-1432-4F55-961A-FF21E1F1C168}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D3E7422-1432-4F55-961A-FF21E1F1C168}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D4DF9E0-C110-446F-B59D-554A69257FBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D4DF9E0-C110-446F-B59D-554A69257FBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D4DF9E0-C110-446F-B59D-554A69257FBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D4DF9E0-C110-446F-B59D-554A69257FBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB15D632-5C68-4503-B3F5-30AE27F747E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB15D632-5C68-4503-B3F5-30AE27F747E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB15D632-5C68-4503-B3F5-30AE27F747E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB15D632-5C68-4503-B3F5-30AE27F747E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28F71093-C4A9-4754-8517-0E3F61B7A637}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28F71093-C4A9-4754-8517-0E3F61B7A637}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28F71093-C4A9-4754-8517-0E3F61B7A637}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28F71093-C4A9-4754-8517-0E3F61B7A637}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2D960B0-7E61-4BE3-A8EE-1558C3B285A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2D960B0-7E61-4BE3-A8EE-1558C3B285A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2D960B0-7E61-4BE3-A8EE-1558C3B285A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2D960B0-7E61-4BE3-A8EE-1558C3B285A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8255C14-C00F-43A4-AE83-44FB1B278702}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8255C14-C00F-43A4-AE83-44FB1B278702}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8255C14-C00F-43A4-AE83-44FB1B278702}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8255C14-C00F-43A4-AE83-44FB1B278702}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB75D401-1106-4D72-B566-16984BA92576}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB75D401-1106-4D72-B566-16984BA92576}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB75D401-1106-4D72-B566-16984BA92576}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB75D401-1106-4D72-B566-16984BA92576}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

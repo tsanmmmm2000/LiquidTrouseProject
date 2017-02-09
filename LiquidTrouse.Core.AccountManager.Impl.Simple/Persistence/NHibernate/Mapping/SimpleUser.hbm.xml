@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+				   assembly="LiquidTrouse.Core.AccountManager.Impl.Simple"
+				   namespace="LiquidTrouse.Core.AccountManager.Impl.Simple.Domain">
+  <class name="SimpleUser" table="SIMPLE_USER" lazy="false">
+    <id name="UserId" column="USER_ID" type="string">
+      <generator class="assigned"/>
+    </id>
+    <property name="LoginId" column="LOGIN_ID" not-null="true" unique="false" type="string" />
+    <property name="Password" column="PASSWORD" not-null="true" unique="false" type="string" />
+    <property name="DisplayName" column="DISPLAY_NAME" not-null="true" unique="false" type="string" />
+  </class>
+</hibernate-mapping>

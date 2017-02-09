@@ -1,0 +1,2 @@
+insert into SIMPLE_USER (USER_ID, LOGIN_ID, PASSWORD, DISPLAY_NAME) values ('liquidtrouse', 'liquidtrouse', '', 'liquidtrouse');
+insert into SIMPLE_USER (USER_ID, LOGIN_ID, PASSWORD, DISPLAY_NAME) values ('guest', 'guest', '', 'guest');

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+				   assembly="LiquidTrouse.Core.Blog.DataAccess"
+				   namespace="LiquidTrouse.Core.Blog.DataAccess.Domain">
+  <class name="Tag" table="TAG" lazy="false">
+    <id name="TagId" column="TAG_ID" type="Int32" unsaved-value="0">
+      <generator class="native" >
+        <param name="sequence">SEQ_Tag</param>
+      </generator>
+    </id>   
+    <property name="DisplayName" column="DISPLAY_NAME" not-null="true" unique="false" type="string" /> 
+    <property name="UsedCount" column="USED_COUNT" not-null="true" type="Int32"/>
+    <property name="LastUsedDatetime" column="LAST_USED_DATETIME" not-null="true" type="DateTime"/>
+    <bag name="Articles" table="ARTICLE_TAG_EDGE" inverse="true" lazy="true" outer-join="auto">
+      <key column="TAG_ID" />
+      <many-to-many column="ARTICLE_ID" class="Article" />
+    </bag>  
+  </class>
+</hibernate-mapping>
+
+

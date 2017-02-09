@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+				   assembly="LiquidTrouse.Core.Blog.DataAccess"
+				   namespace="LiquidTrouse.Core.Blog.DataAccess.Domain">
+  <class name="ArticleTagEdge" table="ARTICLE_TAG_EDGE" lazy="false">
+    <composite-id>
+      <key-property name="TagId" column="TAG_ID"/>
+      <key-property name="ArticleId" column="ARTICLE_ID"/>
+    </composite-id>
+  </class>
+</hibernate-mapping>
