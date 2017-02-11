@@ -12,7 +12,7 @@
         var mode;
         var gKeyword = "<%=Keyword%>";
         var gSortBy = "<%=SortBy%>";
-        var gSortOrder = "<%=SortOrder%>";
+        var gSortDirection = "<%=SortDirection%>";
         var gTag = "<%=TagDisplayName%>";
         var gPageIndex = <%=PageIndex%>;
         var gPageSize = <%=PageSize%>;
@@ -46,7 +46,7 @@
             var param = "cmd=" + mode
                 + "&keyword=" + LambdaEncode(gKeyword)
                 + "&sortby=" + gSortBy
-                + "&sortorder=" + gSortOrder
+                + "&sortdirection=" + gSortDirection
                 + "&pageindex=" + pageIndex
                 + "&pagesize=" + pageSize
                 + "&tag=" + LambdaEncode(gTag);

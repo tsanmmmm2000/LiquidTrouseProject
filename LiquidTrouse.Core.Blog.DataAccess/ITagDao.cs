@@ -8,7 +8,7 @@ namespace LiquidTrouse.Core.Blog.DataAccess
     {
         Tag Get(int tagId);
         Tag GetByName(string displayName);
-		IList GetByName(List<string> displayNames);
+        IList GetByName(List<string> displayNames);
         IList Get(List<int> tagIds);
         IList GetAll();
         IList GetEdgeByArticle(int articleId);

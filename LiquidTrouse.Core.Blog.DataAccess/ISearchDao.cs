@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LiquidTrouse.Core.Blog.DataAccess.Domain;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,7 @@ namespace LiquidTrouse.Core.Blog.DataAccess
     {
         IList Search(
             string keyword,
-            string sortBy,
-            string sortOrder,
+            Sorting sorting,
             DateTime? startDate,
             DateTime? endDate,
             int pageIndex, 
@@ -19,7 +19,7 @@ namespace LiquidTrouse.Core.Blog.DataAccess
 
         int GetTotalCount(
             string keyword,
-            string sortBy,
+            Sorting sorting,
             DateTime? startDate,
             DateTime? endDate);
     }

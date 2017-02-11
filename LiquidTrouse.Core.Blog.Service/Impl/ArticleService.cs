@@ -1,19 +1,21 @@
-﻿using LiquidTrouse.Core.Blog.DataAccess;
+﻿using LiquidTrouse.Core;
+using LiquidTrouse.Core.AccountManager;
+using LiquidTrouse.Core.AccountManager.DTO;
+using LiquidTrouse.Core.Blog.DataAccess;
 using LiquidTrouse.Core.Blog.DataAccess.Domain;
 using LiquidTrouse.Core.Blog.Service.DTO;
 using LiquidTrouse.Core.Blog.Service.DTOConverter;
-using LiquidTrouse.Core;
-using LiquidTrouse.Core.AccountManager.DTO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using LiquidTrouse.Core.AccountManager;
+using System.Linq;
 
 namespace LiquidTrouse.Core.Blog.Service.Impl
 {
     public class ArticleService : IArticleService
     {
-        private ArticleConverter _converter = new ArticleConverter();
+        private ArticleConverter _articleConverter = new ArticleConverter();
+        private SortingConverter _sortingConverter = new SortingConverter();
 
         private IArticleDao _articleDao;
         public IArticleDao ArticleDao
@@ -33,15 +35,35 @@ namespace LiquidTrouse.Core.Blog.Service.Impl
             set { _hitDao = value; }
         }
 
+        public ArticleInfo[] GetTopN(UserInfo userInfo, int topN)
+        {
+            var articleIdList = _hitDao.GetResourceIds(0, topN, HitType.Article);
+            var articleIds = articleIdList.Cast<int>().ToList();
+            var articles = _articleDao.Get(articleIds);
+            var sortedArticles = SortArticles(articles, articleIds);
+            return _articleConverter.ToDataTransferObject(sortedArticles);
+        }
         public ArticleInfo Get(UserInfo userInfo, int articleId)
         {
             var article = _articleDao.Get(articleId);
-            return _converter.ToDataTransferObject(article);
+            return _articleConverter.ToDataTransferObject(article);
         }
         public PageOf<ArticleInfo> Get(UserInfo userInfo, int pageIndex, int pageSize)
         {
-            var articles = _articleDao.Get(pageIndex, pageSize);
-            var articleInfos = _converter.ToDataTransferObject(articles);
+            return Get(userInfo, new SortingInfo(), pageIndex, pageSize);
+        }
+        public PageOf<ArticleInfo> Get(UserInfo userInfo, SortingInfo sortingInfo, int pageIndex, int pageSize)
+        {
+            var sorting = _sortingConverter.ToDomainObject(sortingInfo);
+
+            var actionMethod = this.GetType().GetMethod("GetSortBy" + sorting.SortBy,
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            
+            var articles = (actionMethod != null)
+                ? actionMethod.Invoke(this, new object[] { pageIndex, pageSize, sorting }) as IList
+                : GetSortBy(pageIndex, pageSize, sorting);
+
+            var articleInfos = _articleConverter.ToDataTransferObject(articles);
             return new PageOf<ArticleInfo>()
             {
                 TotalCount = _articleDao.GetTotalCount(),
@@ -57,9 +79,9 @@ namespace LiquidTrouse.Core.Blog.Service.Impl
         public void Create(UserInfo userInfo, ArticleInfo articleInfo, string[] tagDisplayNames)
         {
             CheckAvailable(userInfo);
-            tagDisplayNames = GetNoDuplicatedTags(tagDisplayNames);
+            tagDisplayNames = FilterDuplicatedTags(tagDisplayNames);
             var tags = EnsureTagsCreated(tagDisplayNames);
-            var article = _converter.ToDomainObject(articleInfo);
+            var article = _articleConverter.ToDomainObject(articleInfo);
             article.Tags = tags;
             _articleDao.Create(article);
         }
@@ -94,12 +116,12 @@ namespace LiquidTrouse.Core.Blog.Service.Impl
             article.UrlTitle = articleInfo.UrlTitle;
             article.CoverImageUrl = articleInfo.CoverImageUrl;
 
-            article.Tags = FindFinalTags(article.Tags, GetNoDuplicatedTags(tagDisplayNames));
+            article.Tags = FindFinalTags(article.Tags, FilterDuplicatedTags(tagDisplayNames));
             
             _articleDao.Update(article);
         }
 
-        private string[] GetNoDuplicatedTags(string[] displayNames)
+        private string[] FilterDuplicatedTags(string[] displayNames)
 		{
             if (displayNames == null)
             {
@@ -196,27 +218,20 @@ namespace LiquidTrouse.Core.Blog.Service.Impl
                         {
                             needCreation = false;
                             Tag existedTag = null;
-                            existedTag = UpdateExistedTag(tag);
+                            existedTag = AddTagUsedCount(tag);
                             tags.Add(existedTag);
                             break;
                         }
                     }
                     if (needCreation)
                     {
-                        tags.Add(CreateNewTag(displayName));
+                        tags.Add(CreateTag(displayName));
                     }
                 }
             }
             return tags;
 		}	
-		private Tag UpdateExistedTag(Tag tag)
-        {
-            tag.UsedCount += 1;
-            tag.LastUsedDatetime = DateTime.UtcNow;
-            _tagDao.Update(tag);
-            return tag;
-        }	
-		private Tag CreateNewTag(string displayName)
+		private Tag CreateTag(string displayName)
         {
             Tag newTag = new Tag();
             newTag.DisplayName = displayName.ToLower().Trim();
@@ -228,10 +243,17 @@ namespace LiquidTrouse.Core.Blog.Service.Impl
             }
             catch  
             {
-                UpdateExistedTag(newTag);
+                AddTagUsedCount(newTag);
             }
             return newTag;
         }
+        private Tag AddTagUsedCount(Tag tag)
+        {
+            tag.UsedCount += 1;
+            tag.LastUsedDatetime = DateTime.UtcNow;
+            _tagDao.Update(tag);
+            return tag;
+        }	
         private void MinusTagUsedCount(Tag tag)
         {
             tag.UsedCount -= 1;
@@ -249,5 +271,55 @@ namespace LiquidTrouse.Core.Blog.Service.Impl
                 throw new Exception(String.Format("User {0} access denied", userInfo.UserId));
             }
         }
+        private IList SortArticles(IList articles, List<int> sortedIds)
+        {
+            var sortedArticles = new List<Article>();
+            foreach (var articleId in sortedIds)
+            {
+                foreach (Article article in articles)
+                {
+                    if (article.ArticleId == articleId)
+                    {
+                        sortedArticles.Add(article);
+                        break;
+                    }
+                }
+            }
+
+            foreach (Article article in articles)
+            {
+                if (!sortedArticles.Contains(article))
+                {
+                    sortedArticles.Add(article);
+                }
+            }
+            return sortedArticles;
+        }
+
+        #region invoke method
+        private IList GetSortByHit(int pageIndex, int pageSize, Sorting sorting)
+        {
+            var articleIdList = _hitDao.GetResourceIds(pageIndex, pageSize, HitType.Article);
+            var articleIds = articleIdList.Cast<int>().ToList();
+            var articles = _articleDao.Get(articleIds);
+            return SortArticles(articles, articleIds);
+        }
+        private IList GetSortByCreationDatetime(int pageIndex, int pageSize, Sorting sorting)
+        {
+            return GetSortBy(pageIndex, pageSize, sorting);
+        }
+        private IList GetSortByLastModifiedDatetime(int pageIndex, int pageSize, Sorting sorting)
+        {
+            return GetSortBy(pageIndex, pageSize, sorting);
+        }
+        private IList GetSortByTitle(int pageIndex, int pageSize, Sorting sorting)
+        {
+            return GetSortBy(pageIndex, pageSize, sorting);
+        }
+        private IList GetSortBy(int pageIndex, int pageSize, Sorting sorting)
+        {
+            return _articleDao.Get(pageIndex, pageSize, sorting);
+        }
+        #endregion
     }
 }

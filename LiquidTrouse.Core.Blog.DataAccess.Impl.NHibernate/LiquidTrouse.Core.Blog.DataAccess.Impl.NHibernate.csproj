@@ -33,7 +33,8 @@
     <Reference Include="LiquidTrouse.Core">
       <HintPath>..\Lib\LiquidTrouse.Core.dll</HintPath>
     </Reference>
-    <Reference Include="LiquidTrouse.Core.Blog.DataAccess">
+    <Reference Include="LiquidTrouse.Core.Blog.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\LiquidTrouse.Core.Blog.DataAccess.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate">

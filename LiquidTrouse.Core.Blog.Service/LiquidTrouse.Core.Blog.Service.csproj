@@ -56,8 +56,10 @@
       <Link>AssemblyVersionInfo.cs</Link>
     </Compile>
     <Compile Include="DTOConverter\HitConverter.cs" />
+    <Compile Include="DTOConverter\SortingConverter.cs" />
     <Compile Include="DTO\HitInfo.cs" />
     <Compile Include="DTO\QueryPackage.cs" />
+    <Compile Include="DTO\SortingInfo.cs" />
     <Compile Include="IHitService.cs" />
     <Compile Include="Impl\ArticleService.cs" />
     <Compile Include="DTOConverter\ArticleConverter.cs" />

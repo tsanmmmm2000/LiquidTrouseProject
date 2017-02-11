@@ -10,7 +10,6 @@ namespace LiquidTrouse.Core.Blog.DataAccess.Domain
         private int _tagId;
         private int _articleId;
 
-
         public int TagId
         {
             get { return _tagId; }

@@ -34,16 +34,20 @@ namespace LiquidTrouse.Core.Blog.DataAccess.Impl.NHibernate
             var result = query.UniqueResult() as Hit;
             return result;
         }
-        public IList GetTopN(int topN, HitType hitType)
+        public IList GetResourceIds(int pageIndex, int pageSize, HitType hitType)
         {
-            var hql = "select h from Hit as h where h.HitType=? group by h.ResourceId order by count(h.ResourceId) desc";
+            var offset = pageIndex * pageSize;
+            var hql = "select h.ResourceId from Hit as h where h.HitType=? group by h.ResourceId order by count(h.ResourceId) desc";
             var session = GetSession();
             var query = session.CreateQuery(hql);
             query.SetParameter(0, hitType);
-            query.SetMaxResults(topN);
-            IList result = query.List();
+            query.SetFirstResult(offset);
+            query.SetMaxResults(pageSize);
+            var result = query.List();
             return result;
         }
+        
+
         public int GetCount(int resourceId, HitType hitType)
         {
             var hql = "select count(h.ResourceId) from Hit as h where h.ResourceId=? and h.HitType=?";

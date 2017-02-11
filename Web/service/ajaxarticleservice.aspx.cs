@@ -135,9 +135,16 @@ public partial class service_ajaxarticleservice : System.Web.UI.Page
     {
         var pageIndex = WebUtility.GetIntegerParameter("pageindex", 0);
         var pageSize = WebUtility.GetIntegerParameter("pagesize", 10);
+        var sortBy = WebUtility.GetStringParameter("sortby", "creationdatetime");
+        var sortDirection = WebUtility.GetStringParameter("sortdirection", "desc");
         try
         {
-            var articleInfos = _articleService.Get(_currentUser, pageIndex, pageSize);
+            var sortingInfo = new SortingInfo()
+            {
+                SortBy = SortingInfo.ParseSortBy(sortBy),
+                SortDirection = SortingInfo.ParseSortDirection(sortDirection),
+            };
+            var articleInfos = _articleService.Get(_currentUser, sortingInfo, pageIndex, pageSize);
             WebUtility.WriteAjaxResult(true, null, articleInfos);
         }
         catch (Exception ex)

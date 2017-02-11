@@ -11,8 +11,6 @@ namespace LiquidTrouse.Core.Blog.Service
 {
     public interface IHitService
     {
-        HitInfo[] GetArticleTopN(UserInfo userInfo, int topN);
-        HitInfo[] GetTagTopN(UserInfo userInfo, int topN);
         int GetTagHitCount(UserInfo userInfo, int tagId);
         int GetArticleHitCount(UserInfo userInfo, int articleId);
         void CreateArticleHit(UserInfo userInfo, HitInfo hitInfo);

@@ -12,6 +12,7 @@ namespace LiquidTrouse.Core.Blog.Service
     {
         TagInfo Get(UserInfo userInfo, int tagId);
         TagInfo GetByName(UserInfo userInfo, string displayName);
+        TagInfo[] GetTopN(UserInfo userInfo, int topN);
         TagInfo[] GetByArticle(UserInfo userInfo, int articleId);
         TagInfo[] GetAll(UserInfo userInfo);
         PageOf<ArticleInfo> GetArticlesByTag(UserInfo userInfo, int tagId, int pageIndex, int pageSize);

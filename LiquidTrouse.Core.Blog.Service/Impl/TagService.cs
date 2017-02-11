@@ -29,6 +29,12 @@ namespace LiquidTrouse.Core.Blog.Service.Impl
             set { _articleDao = value; }
         }
 
+        private IHitDao _hitDao;
+        public IHitDao HitDao
+        {
+            set { _hitDao = value; }
+        }
+
         public TagInfo Get(UserInfo userInfo, int tagId)
         {
             var tag = _tagDao.Get(tagId);
@@ -39,6 +45,14 @@ namespace LiquidTrouse.Core.Blog.Service.Impl
             displayName = FormatDisplayName(displayName);
             var tag = _tagDao.GetByName(displayName);
             return _converter.ToDataTransferObject(tag);
+        }
+        public TagInfo[] GetTopN(UserInfo userInfo, int topN)
+        {
+            var tagIdList = _hitDao.GetResourceIds(0, topN, HitType.Tag);
+            var tagIds = tagIdList.Cast<int>().ToList();
+            var tags = _tagDao.Get(tagIds);
+            var sortedTags = SortTags(tags, tagIds);
+            return _converter.ToDataTransferObject(sortedTags);
         }
         public TagInfo[] GetByArticle(UserInfo userInfo, int articleId)
         {
@@ -117,6 +131,30 @@ namespace LiquidTrouse.Core.Blog.Service.Impl
                 articles.Add(article);
             }
             return articles;
-        }       
+        }
+        private IList SortTags(IList tags, List<int> sortedIds)
+        {
+            var sortedTags = new List<Tag>();
+            foreach (var tagId in sortedIds)
+            {
+                foreach (Tag tag in tags)
+                {
+                    if (tag.TagId == tagId)
+                    {
+                        sortedTags.Add(tag);
+                        break;
+                    }
+                }
+            }
+
+            foreach (Tag tag in tags)
+            {
+                if (!sortedTags.Contains(tag))
+                {
+                    sortedTags.Add(tag);
+                }
+            }
+            return sortedTags;
+        }
     }
 }

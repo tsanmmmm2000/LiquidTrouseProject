@@ -1,4 +1,5 @@
-﻿using NHibernate;
+﻿using LiquidTrouse.Core.Blog.DataAccess.Domain;
+using NHibernate;
 using Spring.Data.NHibernate;
 using System;
 using System.Collections;
@@ -23,8 +24,7 @@ namespace LiquidTrouse.Core.Blog.DataAccess.Impl.NHibernate
 
         public IList Search(
             string keyword,
-            string sortBy,
-            string sortOrder,
+            Sorting sorting,
             DateTime? startDate,
             DateTime? endDate,
             int pageIndex,
@@ -40,8 +40,8 @@ namespace LiquidTrouse.Core.Blog.DataAccess.Impl.NHibernate
                 sb.Append("and a.{1} between ? and ? ");
             }
             sb.Append("order by a.{1} {2}");
-            
-            string hql = String.Format(sb.ToString(), keyword, sortBy, sortOrder);
+
+            var hql = String.Format(sb.ToString(), keyword, sorting.SortBy, sorting.SortDirection);
             
             var session = GetSession();
             var query = session.CreateQuery(hql);
@@ -60,7 +60,7 @@ namespace LiquidTrouse.Core.Blog.DataAccess.Impl.NHibernate
 
         public int GetTotalCount(
             string keyword, 
-            string sortBy, 
+            Sorting sorting, 
             DateTime? startDate, 
             DateTime? endDate)
         {
@@ -71,7 +71,7 @@ namespace LiquidTrouse.Core.Blog.DataAccess.Impl.NHibernate
             if (useDate)
             {
                 sb.Append("and a.{1} between ? and ? ");
-                hql = String.Format(sb.ToString(), keyword, sortBy);
+                hql = String.Format(sb.ToString(), keyword, sorting.SortBy);
             }
             else
             {

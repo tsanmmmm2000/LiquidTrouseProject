@@ -10,13 +10,22 @@
             nextPage: "下一頁",
             pagerInfo: "總共有{0}篇文章，共{1}頁"
         };
+        var sortElement = {
+            creationdatetime: "依建立時間",
+            lastmodifieddatetime: "依修改時間",
+            hit: "依熱門度",
+            title: "依標題"
+        }
         var gPageIndex = <%=PageIndex%>;
         var gPageSize = <%=PageSize%>;
+        var gSortBy = "<%=SortBy%>";
+        var gSortDirection = "<%=SortDirection%>";
         var offset = "<%=WebUtility.GetCurrentUserUTCOffset().ToString()%>";
 
         $(document).ready(function () {
             SetPagerText(langPager.prePage, langPager.nextPage, langPager.pagerInfo);
             WriteUI();
+            WriteSortingDropdown();
         });
 
         function UpdatePagerParamAndCallShowResult(pageIndex, pageSize) {
@@ -33,7 +42,9 @@
         function ShowResult(pageIndex, pageSize) {
             var param = "cmd=batchget"
                 + "&pageindex=" + pageIndex
-                + "&pagesize=" + pageSize;
+                + "&pagesize=" + pageSize 
+                + "&sortby=" + gSortBy
+                + "&sortdirection=" + gSortDirection;
             $.getJSON(articleServiceUrl, param, GetResult)
         }
         function GetResult(data) {
@@ -79,7 +90,22 @@
         }
 		function GetNoDataStyle() {
 			return "<h4>查無文章</h4>"
-		}		
+		}	
+		function WriteSortingDropdown() {
+		    $(".dropdown-menu").empty();
+		    $.each(sortElement, function(i, n) {
+		        if (i != gSortBy) {
+		            var item = "<li><a href=\"javascript:void(0);\" class=\"sort-by\" id=\"" + i + "\">" + n + "</a></li>";
+		            $(".dropdown-menu").append(item);
+		        }
+		    });
+		    $(".dropdown-toggle").html(sortElement[gSortBy] + "&nbsp;<span class=\"caret\"></span>");
+		    $(".sort-by").click(function() {
+		        gSortBy = this.id;
+		        WriteUI();
+		        WriteSortingDropdown();
+		    });
+		}
     </script>
     <header class="intro-header">
         <div class="container">
@@ -98,7 +124,12 @@
             <div class="col-lg-12">
                 <h1 class="page-header">
                     <small>文章列表</small>
+                    <div class="dropdown" style="float:right;">
+                      <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown"></button>
+                      <ul class="dropdown-menu dropdown-menu-right"></ul>
+                    </div>
                 </h1>
+
             </div>
         </div>
         <div id="articles"></div>

@@ -3,6 +3,7 @@ using NHibernate;
 using Spring.Data.NHibernate;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace LiquidTrouse.Core.Blog.DataAccess.Impl.NHibernate
 {
@@ -28,10 +29,29 @@ namespace LiquidTrouse.Core.Blog.DataAccess.Impl.NHibernate
             var result = query.UniqueResult() as Article;
             return result;
         }
+        public IList Get(List<int> articleIds)
+        {
+            return Get(articleIds, new Sorting());
+        }
+        public IList Get(List<int> articleIds, Sorting sorting)
+        {
+            var hql = "select a from Article as a where a.ArticleId in (:idList) and a.Status=0 order by a.{0} {1}";
+            hql = String.Format(hql, sorting.SortBy, sorting.SortDirection);
+            var session = GetSession();
+            var query = session.CreateQuery(hql);
+            query.SetParameterList("idList", articleIds);
+            IList result = query.List();
+            return result;
+        }
         public IList Get(int pageIndex, int pageSize)
         {
+            return Get(pageIndex, pageSize, new Sorting());
+        }
+        public IList Get(int pageIndex, int pageSize, Sorting sorting)
+        {
             var offset = pageIndex * pageSize;
-            var hql = "select a from Article as a where a.Status=0 order by a.CreationDatetime desc";
+            var hql = "select a from Article as a where a.Status=0 order by a.{0} {1}";
+            hql = String.Format(hql, sorting.SortBy, sorting.SortDirection);
             var session = GetSession();
             var query = session.CreateQuery(hql);
             query.SetFirstResult(offset);

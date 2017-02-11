@@ -45,6 +45,7 @@
     <Compile Include="Domain\Article.cs" />
     <Compile Include="Domain\ArticleTagEdge.cs" />
     <Compile Include="Domain\Hit.cs" />
+    <Compile Include="Domain\Sorting.cs" />
     <Compile Include="Domain\Tag.cs" />
     <Compile Include="IArticleDao.cs" />
     <Compile Include="IHitDao.cs" />

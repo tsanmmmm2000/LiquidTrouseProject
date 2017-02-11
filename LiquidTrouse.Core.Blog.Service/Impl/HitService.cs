@@ -2,10 +2,6 @@
 using LiquidTrouse.Core.Blog.Service.DTO;
 using LiquidTrouse.Core.Blog.Service.DTOConverter;
 using LiquidTrouse.Core.AccountManager.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using LiquidTrouse.Core.Blog.DataAccess.Domain;
 
 namespace LiquidTrouse.Core.Blog.Service.Impl
@@ -20,14 +16,6 @@ namespace LiquidTrouse.Core.Blog.Service.Impl
             set { _hitDao = value; }
         }
 
-        public HitInfo[] GetArticleTopN(UserInfo userInfo, int topN)
-        {
-            return GetTopN(topN, HitType.Article);
-        }
-        public HitInfo[] GetTagTopN(UserInfo userInfo, int topN)
-        {
-            return GetTopN(topN, HitType.Tag);
-        }
         public int GetTagHitCount(UserInfo userInfo, int tagId)
         {
             return _hitDao.GetCount(tagId, HitType.Tag);
@@ -45,11 +33,6 @@ namespace LiquidTrouse.Core.Blog.Service.Impl
             CreateHit(hitInfo, HitType.Tag);
         }
 
-        private HitInfo[] GetTopN(int topN, HitType hitType)
-        {
-            var hits = _hitDao.GetTopN(topN, hitType);
-            return _converter.ToDataTransferObject(hits);
-        }
         private void CreateHit(HitInfo hitInfo, HitType hitType)
         {
             const int withinHour = 24;
