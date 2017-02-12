@@ -4,11 +4,6 @@
     <script type="text/javascript">
         var rootUrl = "<%=Request.ApplicationPath%>";
         var searchServiceUrl = rootUrl + "/service/ajaxsearchservice.aspx";
-        var langPager = {
-            prePage: "上一頁",
-            nextPage: "下一頁",
-            pagerInfo: "總共有{0}篇文章，共{1}頁"
-        };
         var mode;
         var gKeyword = "<%=Keyword%>";
         var gSortBy = "<%=SortBy%>";
@@ -19,7 +14,14 @@
         var offset = "<%=WebUtility.GetCurrentUserUTCOffset().ToString()%>";
 
         $(document).ready(function () {
-            SetPagerText(langPager.prePage, langPager.nextPage, langPager.pagerInfo);
+
+            var pagerOption = {
+                PreviousPage: "上一頁",
+                NextPage: "下一頁",
+                Info: "總共有 {0} 篇文章，共 {1} 頁"
+            };
+            InitPager(pagerOption);
+
             if (gKeyword != null && gKeyword != "") {
                 $("#hint").html("搜尋關鍵字：「" + gKeyword + "」");
                 mode = "keyword";
@@ -28,74 +30,44 @@
                 $("#hint").html("搜尋標籤：「" + gTag + "」");
                 mode = "tag";
             }
-            WriteUI();
+            WriteArticles();
         });
 
-        function UpdatePagerParamAndCallShowResult(pageIndex, pageSize) {
-            gPageIndex = parseInt(pageIndex, 10);
-            gPageSize = parseInt(pageSize, 10);
-            WriteUI()
-        }
-
-        function WriteUI() {
-            $("#articles").html("");
-            $("#pager").html("");
-            ShowResult(gPageIndex, gPageSize);
-        }
-        function ShowResult(pageIndex, pageSize) {
+        function WriteArticles() {
             var param = "cmd=" + mode
                 + "&keyword=" + LambdaEncode(gKeyword)
                 + "&sortby=" + gSortBy
                 + "&sortdirection=" + gSortDirection
-                + "&pageindex=" + pageIndex
-                + "&pagesize=" + pageSize
+                + "&pageindex=" + gPageIndex
+                + "&pagesize=" + gPageSize
                 + "&tag=" + LambdaEncode(gTag);
-            $.getJSON(searchServiceUrl, param, GetResult)
+            $.getJSON(searchServiceUrl, param, Callback)
         }
-        function GetResult(data) {
-            arrResult = new Array();
-            var pageIndexFromResult = 0;
+        function Callback(data) {
+            var results = new Array();
+            var totalCount = 0;
             if (data.Success) {
-                $.each(data.Data.PageOfResults, function (i, n) {
-                    arrResult.push(n);
+                $.each(data.Data.Results, function (i, n) {
+                    results.push(n);
                 });
                 totalCount = data.Data.TotalCount;
-                pageIndexFromResult = data.Data.PageNumber;
-            } else {
-                totalCount = 0;
+                gPageIndex = data.Data.PageIndex;
+                gPageSize = data.Data.PageSize;
             }
 
-            if (data.Data.TotalCount <= 0) {
+            if (totalCount <= 0) {
                 $("#articles").html(GetNoDataStyle());
                 return;
             }
-            WriteResult();
 
-            var pageCount;
-            if (gPageIndex == null) {
-                gPageIndex = 0;
-            }
-            if (gPageSize == null) {
-                gPageSize = 10;
-            }
-            if ((totalCount % gPageSize) == 0) {
-                pageCount = totalCount / gPageSize;
-            } else {
-                pageCount = parseInt((totalCount / gPageSize).toString(), 10) + 1;
-            }
-            CreatePagerUsingPagerJS((pageIndexFromResult != gPageIndex ? pageIndexFromResult : gPageIndex), gPageSize, pageCount, totalCount);
-        }
-        function WriteResult() {
-            $("#articles").html("");
             var html = "";
-            $.each(arrResult, function (i, n) {
+            $.each(results, function (i, n) {
                 html += RenderResult(rootUrl, n, offset);
             });
             $("#articles").html(html);
+
+            WritePager(gPageIndex, gPageSize, totalCount);
         }
-		function GetNoDataStyle() {
-			return "<h4>查無文章</h4>"
-		}
     </script>
     <header class="intro-header">
         <div class="container">

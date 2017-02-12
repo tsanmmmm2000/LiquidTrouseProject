@@ -4,12 +4,6 @@
     <script type="text/javascript">
         var rootUrl = "<%=Request.ApplicationPath%>";
         var articleServiceUrl = rootUrl + "/service/ajaxarticleservice.aspx";
-        var tagServiceUrl = rootUrl + "/service/ajaxtagservice.aspx";
-        var langPager = {
-            prePage: "上一頁",
-            nextPage: "下一頁",
-            pagerInfo: "總共有{0}篇文章，共{1}頁"
-        };
         var sortElement = {
             creationdatetime: "依建立時間",
             lastmodifieddatetime: "依修改時間",
@@ -23,74 +17,49 @@
         var offset = "<%=WebUtility.GetCurrentUserUTCOffset().ToString()%>";
 
         $(document).ready(function () {
-            SetPagerText(langPager.prePage, langPager.nextPage, langPager.pagerInfo);
-            WriteUI();
+            var pagerOption = {
+                PreviousPage: "上一頁",
+                NextPage: "下一頁",
+                Info: "總共有 {0} 篇文章，共 {1} 頁"
+            };
+            InitPager(pagerOption);
+            WriteArticles();
             WriteSortingDropdown();
         });
 
-        function UpdatePagerParamAndCallShowResult(pageIndex, pageSize) {
-            gPageIndex = parseInt(pageIndex, 10);
-            gPageSize = parseInt(pageSize, 10);
-            WriteUI()
-        }
-
-        function WriteUI() {
-            $("#articles").html("");
-            $("#pager").html("");
-            ShowResult(gPageIndex, gPageSize);
-        }
-        function ShowResult(pageIndex, pageSize) {
+        function WriteArticles() {
             var param = "cmd=batchget"
-                + "&pageindex=" + pageIndex
-                + "&pagesize=" + pageSize 
+                + "&pageindex=" + gPageIndex
+                + "&pagesize=" + gPageSize 
                 + "&sortby=" + gSortBy
                 + "&sortdirection=" + gSortDirection;
-            $.getJSON(articleServiceUrl, param, GetResult)
+            $.getJSON(articleServiceUrl, param, Callback)
         }
-        function GetResult(data) {
-            arrResult = new Array();
-            var pageIndexFromResult = 0;
+        function Callback(data) {
+            var results = new Array();
+            var totalCount = 0;
             if (data.Success) {
-                $.each(data.Data.PageOfResults, function (i, n) {
-                    arrResult.push(n);
+                $.each(data.Data.Results, function (i, n) {
+                    results.push(n);
                 });
                 totalCount = data.Data.TotalCount;
-                pageIndexFromResult = data.Data.PageNumber;
-            } else {
-                totalCount = 0;
-            }
+                gPageIndex = data.Data.PageIndex;
+                gPageSize = data.Data.PageSize;
+            } 
 
-            if (data.Data.TotalCount <= 0) {
+            if (totalCount <= 0) {
                 $("#articles").html(GetNoDataStyle());
                 return;
             }
-            WriteResult();
 
-            var pageCount;
-            if (gPageIndex == null) {
-                gPageIndex = 0;
-            }
-            if (gPageSize == null) {
-                gPageSize = 10;
-            }
-            if ((totalCount % gPageSize) == 0) {
-                pageCount = totalCount / gPageSize;
-            } else {
-                pageCount = parseInt((totalCount / gPageSize).toString(), 10) + 1;
-            }
-            CreatePagerUsingPagerJS((pageIndexFromResult != gPageIndex ? pageIndexFromResult : gPageIndex), gPageSize, pageCount, totalCount);
-        }
-        function WriteResult() {
-            $("#articles").html("");
             var html = "";
-            $.each(arrResult, function (i, n) {
+            $.each(results, function (i, n) {
                 html += RenderResult(rootUrl, n, offset);
             });
             $("#articles").html(html);
+
+            WritePager(gPageIndex, gPageSize, totalCount);
         }
-		function GetNoDataStyle() {
-			return "<h4>查無文章</h4>"
-		}	
 		function WriteSortingDropdown() {
 		    $(".dropdown-menu").empty();
 		    $.each(sortElement, function(i, n) {
@@ -102,7 +71,7 @@
 		    $(".dropdown-toggle").html(sortElement[gSortBy] + "&nbsp;<span class=\"caret\"></span>");
 		    $(".sort-by").click(function() {
 		        gSortBy = this.id;
-		        WriteUI();
+		        WriteArticles();
 		        WriteSortingDropdown();
 		    });
 		}

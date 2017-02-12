@@ -4,16 +4,16 @@
     <script type="text/javascript">
         var rootUrl = "<%=Request.ApplicationPath%>";
         var articleServiceUrl = rootUrl + "/service/ajaxarticleservice.aspx";
-        var langPager = {
-            prePage: "上一頁",
-            nextPage: "下一頁",
-            pagerInfo: "總共有{0}篇文章，共{1}頁"
-        };
         var gPageIndex = <%=PageIndex%>;
         var gPageSize = <%=PageSize%>;
         $(document).ready(function () {
-            SetPagerText(langPager.prePage, langPager.nextPage, langPager.pagerInfo);
-            WriteUI();
+            var pagerOption = {
+                PreviousPage: "上一頁",
+                NextPage: "下一頁",
+                Info: "總共有 {0} 篇文章，共 {1} 頁"
+            };
+            InitPager(pagerOption);
+            WriteArticles();
 
             $("#btn-create").click(function() {
                 window.location.href = rootUrl + "/management/create";
@@ -28,60 +28,31 @@
             });
         });
 
-        function UpdatePagerParamAndCallShowResult(pageIndex, pageSize) {
-            gPageIndex = parseInt(pageIndex, 10);
-            gPageSize = parseInt(pageSize, 10);
-            WriteUI()
-        }
-
-        function WriteUI() {
-            $("#articles").html("");
-            $("#pager").html("");
-            ShowResult(gPageIndex, gPageSize);
-        }
-        function ShowResult(pageIndex, pageSize) {
+        function WriteArticles() {
             var param = "cmd=batchget"
-                + "&pageindex=" + pageIndex
-                + "&pagesize=" + pageSize;
-            $.getJSON(articleServiceUrl, param, GetResult)
+                + "&pageindex=" + gPageIndex
+                + "&pagesize=" + gPageSize;
+            $.getJSON(articleServiceUrl, param, Callback)
         }
-        function GetResult(data) {
-            arrResult = new Array();
-            var pageIndexFromResult = 0;
+        function Callback(data) {
+            var results = new Array();
+            var totalCount = 0;
             if (data.Success) {
-                $.each(data.Data.PageOfResults, function (i, n) {
-                    arrResult.push(n);
+                $.each(data.Data.Results, function (i, n) {
+                    results.push(n);
                 });
                 totalCount = data.Data.TotalCount;
-                pageIndexFromResult = data.Data.PageNumber;
-            } else {
-                totalCount = 0;
+                gPageIndex = data.Data.PageIndex;
+                gPageSize = data.Data.PageSize;
             }
 
-            if (data.Data.TotalCount <= 0) {
+            if (totalCount <= 0) {
                 $("#articles").html(GetNoDataStyle());
                 return;
             }
-            WriteResult();
 
-            var pageCount;
-            if (gPageIndex == null) {
-                gPageIndex = 0;
-            }
-            if (gPageSize == null) {
-                gPageSize = 10;
-            }
-            if ((totalCount % gPageSize) == 0) {
-                pageCount = totalCount / gPageSize;
-            } else {
-                pageCount = parseInt((totalCount / gPageSize).toString(), 10) + 1;
-            }
-            CreatePagerUsingPagerJS((pageIndexFromResult != gPageIndex ? pageIndexFromResult : gPageIndex), gPageSize, pageCount, totalCount);
-        }
-        function WriteResult() {
-            $("#articles").html("");
             var html = "";
-            $.each(arrResult, function (i, n) {
+            $.each(results, function (i, n) {
                 html += "<tr>";
                 html += "<td>"
                 html += "<a href=\"" + rootUrl + "/article/" + n.UrlTitle + "/" + n.ArticleId + "\" target=\"_blank\">"
@@ -100,6 +71,8 @@
             });
             $("#articles").html(html);
 
+            WritePager(gPageIndex, gPageSize, totalCount);
+
             $(".btn-edit").click(function(){
                 var articleId = this.id.split('-')[1];
                 window.location.href = rootUrl + "/management/edit/" + articleId;
@@ -114,8 +87,7 @@
                         var result = $.parseJSON(data);
                         if (result.Success) {
                             alert("刪除成功");
-                            $("#articles").empty();
-                            WriteUI();
+                            WriteArticles();
                         } else {
                             Alert(result.Message);
                         }
@@ -123,9 +95,6 @@
                 }
             });
         }
-		function GetNoDataStyle() {
-			return "<h4>查無文章</h4>"
-		}		
     </script>
     <style type="text/css">
         body {

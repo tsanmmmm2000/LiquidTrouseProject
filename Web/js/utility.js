@@ -144,3 +144,6 @@ function AlertMessage(message) {
 	$(".alert-danger").show();
 	$(".alert-danger").html(message);
 }
+function GetNoDataStyle() {
+    return "<h4>查無文章</h4>";
+}

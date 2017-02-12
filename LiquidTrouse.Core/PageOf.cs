@@ -8,8 +8,8 @@ namespace LiquidTrouse.Core
     public struct PageOf<T>
     {
         public int TotalCount;
-        public int PageCount;
-        public int PageNumber;
-        public IEnumerable<T> PageOfResults;
+        public int PageSize;
+        public int PageIndex;
+        public IEnumerable<T> Results;
     }
 }

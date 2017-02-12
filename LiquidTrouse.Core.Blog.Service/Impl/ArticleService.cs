@@ -67,9 +67,9 @@ namespace LiquidTrouse.Core.Blog.Service.Impl
             return new PageOf<ArticleInfo>()
             {
                 TotalCount = _articleDao.GetTotalCount(),
-                PageCount = pageSize,
-                PageNumber = pageIndex,
-                PageOfResults = articleInfos
+                PageSize = pageSize,
+                PageIndex = pageIndex,
+                Results = articleInfos
             };
         }
         public void Create(UserInfo userInfo, ArticleInfo articleInfo)
