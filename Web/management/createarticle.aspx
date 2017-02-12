@@ -187,7 +187,7 @@
 				    </div>					  
                     <br/>
 				    <div class="input-group">
-					    <span class="input-group-addon">http://localhost/LiquidTrouse/article/</span>
+					    <span class="input-group-addon">http://yourdomain/liquidtrouse/article/</span>
 					    <input type="text" class="form-control" id="url-title" placeholder="網址標題">
 					    <span class="input-group-addon">/</span>					
 				    </div>

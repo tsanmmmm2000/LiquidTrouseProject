@@ -23,7 +23,7 @@ namespace LiquidTrouse.Core.Blog.Service.Impl
             set { _articleDao = value; }
         }
 		
-		private ITagDao _tagDao;
+        private ITagDao _tagDao;
         public ITagDao TagDao
         {
             set { _tagDao = value; }
@@ -92,7 +92,7 @@ namespace LiquidTrouse.Core.Blog.Service.Impl
             IList originalTags = article.Tags;
             foreach (Tag originalTag in originalTags)
             {
-                MinusTagUsedCount(originalTag);
+                SubtractTagUsedCount(originalTag);
             }
             article.Status = ArticleStatus.InActive;
             article.Tags = new ArrayList();
@@ -121,18 +121,19 @@ namespace LiquidTrouse.Core.Blog.Service.Impl
             _articleDao.Update(article);
         }
 
-        private string[] FilterDuplicatedTags(string[] displayNames)
+        #region tag related
+        private string[] FilterDuplicatedTags(string[] tagDisplayNames)
 		{
-            if (displayNames == null)
+            if (tagDisplayNames == null)
             {
-                displayNames = new string[] { };
+                tagDisplayNames = new string[] { };
             }
             var result = new List<string>();
-            foreach (var displayName in displayNames)
+            foreach (var tagDisplayName in tagDisplayNames)
             {
-                if (!result.Contains(displayName.Trim().ToLower()))
+                if (!result.Contains(tagDisplayName.Trim().ToLower()))
                 {
-                    result.Add(displayName.Trim().ToLower());
+                    result.Add(tagDisplayName.Trim().ToLower());
                 }
             }
             if (result != null && result.Count > 0)
@@ -144,55 +145,51 @@ namespace LiquidTrouse.Core.Blog.Service.Impl
         private IList FindFinalTags(IList originalTags, string[] tagDisplayNames)
         {
             var newTagDisplayNames = new List<string>(tagDisplayNames);
-            IList finalTags = new List<Tag>();
-            for (int i = 0; i < newTagDisplayNames.Count; i++)
-            {
-                var newTagDisplayName = newTagDisplayNames[i];
-                newTagDisplayName = newTagDisplayName.ToLower().Trim();
 
+            var originalTagsReadyToSubtracted = originalTags.Cast<Tag>().ToList();
+            var newTagDisplayNamesReadyToCreated = new List<string>(newTagDisplayNames);
+            var finalTags = new List<Tag>();
+
+            foreach (var newTagDisplayName in newTagDisplayNames)
+            {
                 if (!String.IsNullOrEmpty(newTagDisplayName))
                 {
-                    for (int k = 0; k < originalTags.Count; k++)
+                    foreach(Tag originalTag in originalTags)
                     {
-                        var originalTag = originalTags[k] as Tag;
-                        if (originalTag.DisplayName.ToLower().Trim().Equals(newTagDisplayName))
+                        if (originalTag.DisplayName.ToLower().Trim().Equals(newTagDisplayName.ToLower().Trim()))
                         {
-                            originalTags.RemoveAt(k);
-                            newTagDisplayNames.RemoveAt(i);
                             finalTags.Add(originalTag);
-                            i--;
-                            k--;
-                            break;
+                            newTagDisplayNamesReadyToCreated.Remove(newTagDisplayName);
+                            originalTagsReadyToSubtracted.Remove(originalTag);
                         }
                     }
                 }
             }
 
-            foreach (Tag originalTag in originalTags)
+            foreach (var originalTag in originalTagsReadyToSubtracted)
             {
-                MinusTagUsedCount(originalTag);
+                SubtractTagUsedCount(originalTag);
             }
 
-            IList temp = null;
-            if (newTagDisplayNames != null)
+            IList candidate = null;
+            if (newTagDisplayNamesReadyToCreated != null)
             {
-                if (newTagDisplayNames.Count == 0)
+                if (newTagDisplayNamesReadyToCreated.Count == 0)
                 {
-                    if (tagDisplayNames != null && tagDisplayNames.Length > 0)
+                    if (newTagDisplayNames != null && newTagDisplayNames.Count > 0)
                     {
-                        temp = _tagDao.GetByName(new List<string>(tagDisplayNames));
+                        candidate = _tagDao.GetByName(newTagDisplayNames);
                     }
                 }
                 else
                 {
-                    string[] tempArray = newTagDisplayNames.ToArray();
-                    temp = EnsureTagsCreated(tempArray);
+                    candidate = EnsureTagsCreated(newTagDisplayNamesReadyToCreated.ToArray());
                 }
             }
 
-            if (temp != null)
+            if (candidate != null)
             {
-                foreach (Tag tag in temp)
+                foreach (Tag tag in candidate)
                 {
                     if (!finalTags.Contains(tag))
                     {
@@ -202,39 +199,38 @@ namespace LiquidTrouse.Core.Blog.Service.Impl
             }
             return finalTags;
         }
-        private IList EnsureTagsCreated(string[] displayNames)
+        private IList EnsureTagsCreated(string[] tagDisplayNames)
 		{
 			var tags = new List<Tag>();
-            var allExistedTags = _tagDao.GetByName(new List<string>(displayNames));
+            var allExistedTags = _tagDao.GetByName(new List<string>(tagDisplayNames));
 
-            foreach (var displayName in displayNames)
+            foreach (var tagDisplayName in tagDisplayNames)
             {
-                if (!String.IsNullOrEmpty(displayName))
+                if (!String.IsNullOrEmpty(tagDisplayName))
                 {
-                    bool needCreation = true;
+                    bool needToCreate = true;
                     foreach (Tag tag in allExistedTags)
                     {
-                        if (tag.DisplayName.Trim().Equals(displayName.ToLower().Trim()))
+                        if (tag.DisplayName.ToLower().Trim().Equals(tagDisplayName.ToLower().Trim()))
                         {
-                            needCreation = false;
-                            Tag existedTag = null;
-                            existedTag = AddTagUsedCount(tag);
-                            tags.Add(existedTag);
+                            needToCreate = false;
+                            AddTagUsedCount(tag);
+                            tags.Add(tag);
                             break;
                         }
                     }
-                    if (needCreation)
+                    if (needToCreate)
                     {
-                        tags.Add(CreateTag(displayName));
+                        tags.Add(CreateTag(tagDisplayName));
                     }
                 }
             }
             return tags;
-		}	
-		private Tag CreateTag(string displayName)
+		}
+        private Tag CreateTag(string tagDisplayName)
         {
             Tag newTag = new Tag();
-            newTag.DisplayName = displayName.ToLower().Trim();
+            newTag.DisplayName = tagDisplayName.ToLower().Trim();
             newTag.UsedCount = 1;
             newTag.LastUsedDatetime = DateTime.UtcNow;
             try
@@ -247,14 +243,13 @@ namespace LiquidTrouse.Core.Blog.Service.Impl
             }
             return newTag;
         }
-        private Tag AddTagUsedCount(Tag tag)
+        private void AddTagUsedCount(Tag tag)
         {
             tag.UsedCount += 1;
             tag.LastUsedDatetime = DateTime.UtcNow;
             _tagDao.Update(tag);
-            return tag;
         }	
-        private void MinusTagUsedCount(Tag tag)
+        private void SubtractTagUsedCount(Tag tag)
         {
             tag.UsedCount -= 1;
             if (tag.UsedCount < 0)
@@ -263,6 +258,35 @@ namespace LiquidTrouse.Core.Blog.Service.Impl
             }
             _tagDao.Update(tag);
         }
+        #endregion
+
+        #region invoke method
+        private IList GetSortByHit(int pageIndex, int pageSize, Sorting sorting)
+        {
+            var articleIdList = _hitDao.GetResourceIds(pageIndex, pageSize, HitType.Article);
+            var articleIds = articleIdList.Cast<int>().ToList();
+            var articles = _articleDao.Get(articleIds);
+            return SortArticles(articles, articleIds);
+        }
+        private IList GetSortByCreationDatetime(int pageIndex, int pageSize, Sorting sorting)
+        {
+            return GetSortBy(pageIndex, pageSize, sorting);
+        }
+        private IList GetSortByLastModifiedDatetime(int pageIndex, int pageSize, Sorting sorting)
+        {
+            return GetSortBy(pageIndex, pageSize, sorting);
+        }
+        private IList GetSortByTitle(int pageIndex, int pageSize, Sorting sorting)
+        {
+            return GetSortBy(pageIndex, pageSize, sorting);
+        }
+        private IList GetSortBy(int pageIndex, int pageSize, Sorting sorting)
+        {
+            return _articleDao.Get(pageIndex, pageSize, sorting);
+        }
+        #endregion
+
+        #region other
         private void CheckAvailable(UserInfo userInfo)
         {
             var isAdmin = AccountUtility.IsAdminUser(userInfo);
@@ -294,31 +318,6 @@ namespace LiquidTrouse.Core.Blog.Service.Impl
                 }
             }
             return sortedArticles;
-        }
-
-        #region invoke method
-        private IList GetSortByHit(int pageIndex, int pageSize, Sorting sorting)
-        {
-            var articleIdList = _hitDao.GetResourceIds(pageIndex, pageSize, HitType.Article);
-            var articleIds = articleIdList.Cast<int>().ToList();
-            var articles = _articleDao.Get(articleIds);
-            return SortArticles(articles, articleIds);
-        }
-        private IList GetSortByCreationDatetime(int pageIndex, int pageSize, Sorting sorting)
-        {
-            return GetSortBy(pageIndex, pageSize, sorting);
-        }
-        private IList GetSortByLastModifiedDatetime(int pageIndex, int pageSize, Sorting sorting)
-        {
-            return GetSortBy(pageIndex, pageSize, sorting);
-        }
-        private IList GetSortByTitle(int pageIndex, int pageSize, Sorting sorting)
-        {
-            return GetSortBy(pageIndex, pageSize, sorting);
-        }
-        private IList GetSortBy(int pageIndex, int pageSize, Sorting sorting)
-        {
-            return _articleDao.Get(pageIndex, pageSize, sorting);
         }
         #endregion
     }
