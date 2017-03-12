@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects xmlns="http://www.springframework.net"
+         xmlns:db="http://www.springframework.net/database">
+  <!-- Application context for text localization -->
+  <object name="messageSource" type="Spring.Context.Support.ResourceSetMessageSource, Spring.Core">
+    <property name="resourceManagers">
+      <list>
+        <ref object="LQTSResourceManager"/>
+      </list>
+    </property>
+  </object>
+  <object name="LQTSResourceManager" type="Spring.Objects.Factory.Config.ResourceManagerFactoryObject, Spring.Core">
+    <property name="baseName">
+      <value>LiquidTrouse.Core.Globalization.LQTS</value>
+    </property>
+    <property name="assemblyName">
+      <value>LiquidTrouse.Core.Globalization</value>
+    </property>
+  </object>
+  
+  <!-- Property placeholder configurer for database settings -->
+  <object type="Spring.Objects.Factory.Config.PropertyPlaceholderConfigurer, Spring.Core">
+    <property name="Properties">
+      <name-values>
+        <!--MSSQL Connection Stirng-->
+        <add key="db.datasource" value="D:\LiquidTrouse\LiquidTrouseProject\Data\DB\LiquidTrouse.db3"/>
+        <add key="db.user" value=""/>
+        <add key="db.password" value=""/>
+        <add key="db.database" value=""/>
+        <add key="data.dir" value="D:\LiquidTrouse\LiquidTrouseProject\Data"/>
+      </name-values>
+    </property>        
+  </object>
+
+  <!-- Database Configuration -->
+  <!-- SQLite -->
+  <db:provider id="DbProvider" provider="SQLite-1.0.44" connectionString="Data Source=${db.datasource};Version=3;" />
+  <!-- MSSQL -->
+  <!--<db:provider id="DbProvider" provider="SqlServer-2.0" connectionString="Server=${db.datasource};Database=${db.database};User ID=${db.user};Password=${db.password};Connection Timeout=30;" />-->
+
+  <object id="adoTemplate" type="Spring.Data.Core.AdoTemplate, Spring.Data">
+    <property name="DbProvider" ref="DbProvider"/>
+    <property name="DataReaderWrapperType" value="Spring.Data.Support.NullMappingDataReader, Spring.Data"/>
+  </object>
+
+  <!-- NHibernate Configuration -->
+  <object id="NHibernateSessionFactory" type="Spring.Data.NHibernate.LocalSessionFactoryObject, Spring.Data.NHibernate32">
+    <property name="DbProvider" ref="DbProvider"/>
+    <property name="MappingAssemblies">
+      <list>
+        <value>LiquidTrouse.Core.Blog.DataAccess.Impl.NHibernate</value>
+        <value>LiquidTrouse.Core.AccountManager.Impl.Simple</value>
+      </list>
+    </property>
+    <property name="HibernateProperties">
+      <dictionary>
+        <!-- SQLite -->
+        <entry key="dialect" value="NHibernate.Dialect.SQLiteDialect" />
+        <entry key="connection.driver_class" value="NHibernate.Driver.SQLite20Driver" />
+        
+        <!-- MSSQL -->
+        <!--<entry key="dialect" value="NHibernate.Dialect.MsSql2008Dialect"/>
+        <entry key="connection.driver_class" value="NHibernate.Driver.SqlClientDriver"/>-->
+
+        <entry key="connection.provider" value="NHibernate.Connection.DriverConnectionProvider"/>
+        <entry key="show_sql" value="false"/>
+      </dictionary>
+    </property>
+
+    <!-- provides integation with Spring's declarative transaction management features -->
+    <property name="ExposeTransactionAwareSessionFactory" value="true" />
+
+  </object>
+
+  <!-- Transaction Management Strategy - local database transactions -->
+  <object id="TransactionManager" type="Spring.Data.NHibernate.HibernateTransactionManager, Spring.Data.NHibernate32">
+    <property name="DbProvider" ref="DbProvider"/>
+    <property name="SessionFactory" ref="NHibernateSessionFactory"/>
+  </object>
+
+  <!--Transaction Management-->
+  <object id="TxProxyConfigurationTemplate" abstract="true"
+  type="Spring.Transaction.Interceptor.TransactionProxyFactoryObject, Spring.Data">
+    <property name="PlatformTransactionManager" ref="TransactionManager"/>
+    <property name="TransactionAttributes">
+      <name-values>
+        <add key="Update*" value="PROPAGATION_REQUIRED" />
+        <add key="Delete*" value="PROPAGATION_REQUIRED" />
+        <add key="Create*" value="PROPAGATION_REQUIRED" />
+        <add key="Save*" value="PROPAGATION_REQUIRED"/>
+      </name-values>
+    </property>
+  </object>
+  <object id="ArticleServiceProxy" parent="TxProxyConfigurationTemplate">
+    <property name="Target" ref="ArticleService" />
+  </object>
+  <object id="TagServiceProxy" parent="TxProxyConfigurationTemplate">
+    <property name="Target" ref="TagService" />
+  </object>
+  <object id="SearchServiceProxy" parent="TxProxyConfigurationTemplate">
+    <property name="Target" ref="SearchService" />
+  </object>
+  <object id="HitServiceProxy" parent="TxProxyConfigurationTemplate">
+    <property name="Target" ref="HitService" />
+  </object>
+  <!--IoC-->
+  <object id="ArticleService" type="LiquidTrouse.Core.Blog.Service.Impl.ArticleService, LiquidTrouse.Core.Blog.Service">
+    <property name="ArticleDao" ref="NHibernateArticleDao"/>
+    <property name="TagDao" ref="NHibernateTagDao"/>
+    <property name="HitDao" ref="NHibernateHitDao"/>
+  </object>
+  <object id="TagService" type="LiquidTrouse.Core.Blog.Service.Impl.TagService, LiquidTrouse.Core.Blog.Service">
+    <property name="TagDao" ref="NHibernateTagDao"/>
+    <property name="ArticleDao" ref="NHibernateArticleDao"/>
+    <property name="HitDao" ref="NHibernateHitDao"/>
+  </object>
+  <object id="SearchService" type="LiquidTrouse.Core.Blog.Service.Impl.SearchService, LiquidTrouse.Core.Blog.Service">
+    <property name="SearchDao" ref="NHibernateSearchDao"/>
+  </object>
+  <object id="HitService" type="LiquidTrouse.Core.Blog.Service.Impl.HitService, LiquidTrouse.Core.Blog.Service">
+    <property name="HitDao" ref="NHibernateHitDao"/>
+  </object>
+  <object id="AccountManager" type="LiquidTrouse.Core.AccountManager.Impl.Simple.SimpleAccountManager, LiquidTrouse.Core.AccountManager.Impl.Simple">
+    <property name="SimpleUserDao" ref="NHibernateSimpleUserDao" />
+    <property name="Salt" value="+_)(()_+" />
+    <property name="ConfigFilePath" value="${data.dir}\Config" />
+  </object>
+  <object id="NHibernateArticleDao" type="LiquidTrouse.Core.Blog.DataAccess.Impl.NHibernate.NHibernateArticleDao, LiquidTrouse.Core.Blog.DataAccess.Impl.NHibernate">
+    <property name="SessionFactory" ref="NHibernateSessionFactory" />
+  </object>
+  <object id="NHibernateTagDao" type="LiquidTrouse.Core.Blog.DataAccess.Impl.NHibernate.NHibernateTagDao, LiquidTrouse.Core.Blog.DataAccess.Impl.NHibernate">
+    <property name="SessionFactory" ref="NHibernateSessionFactory" />
+  </object>
+  <object id="NHibernateSearchDao" type="LiquidTrouse.Core.Blog.DataAccess.Impl.NHibernate.NHibernateSearchDao, LiquidTrouse.Core.Blog.DataAccess.Impl.NHibernate">
+    <property name="SessionFactory" ref="NHibernateSessionFactory" />
+  </object>
+  <object id="NHibernateHitDao" type="LiquidTrouse.Core.Blog.DataAccess.Impl.NHibernate.NHibernateHitDao, LiquidTrouse.Core.Blog.DataAccess.Impl.NHibernate">
+    <property name="SessionFactory" ref="NHibernateSessionFactory" />
+  </object>
+  <object id="NHibernateSimpleUserDao" type="LiquidTrouse.Core.AccountManager.Impl.Simple.Persistence.NHibernate.NHibernateSimpleUserDao, LiquidTrouse.Core.AccountManager.Impl.Simple">
+    <property name="SessionFactory" ref="NHibernateSessionFactory" />
+  </object>
+</objects>
