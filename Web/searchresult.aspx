@@ -16,18 +16,18 @@
         $(document).ready(function () {
 
             var pagerOption = {
-                PreviousPage: "上一頁",
-                NextPage: "下一頁",
-                Info: "總共有 {0} 篇文章，共 {1} 頁"
+                PreviousPage: "<%=i18n.GetMessage("m20")%>",
+                NextPage: "<%=i18n.GetMessage("m21")%>",
+                Info: "<%=i18n.GetMessage("m22")%>"
             };
             InitPager(pagerOption);
 
             if (gKeyword != null && gKeyword != "") {
-                $("#hint").html("搜尋關鍵字：「" + gKeyword + "」");
+                $("#hint").html("<%=i18n.GetMessage("m30")%>：「" + gKeyword + "」");
                 mode = "keyword";
             }
             if (gTag != null && gTag != "") {
-                $("#hint").html("搜尋標籤：「" + gTag + "」");
+                $("#hint").html("<%=i18n.GetMessage("m29")%>：「" + gTag + "」");
                 mode = "tag";
             }
             WriteArticles();
@@ -56,13 +56,13 @@
             }
 
             if (totalCount <= 0) {
-                $("#articles").html(GetNoDataStyle());
+                $("#articles").html(GetNoDataStyle("<%=i18n.GetMessage("m31")%>"));
                 return;
             }
 
             var html = "";
             $.each(results, function (i, n) {
-                html += RenderResult(rootUrl, n, offset);
+                html += RenderResult(rootUrl, n, offset, "<%=i18n.GetMessage("m24")%>");
             });
             $("#articles").html(html);
 
@@ -74,8 +74,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="site-heading">
-                        <h1 class="tagline">Liquid Trouse 電音誌</h1>
-                        <div class="subheading tagline">幾個對電音及派對文化有興趣的年輕人所開的網誌，專門分享 Trance & House 音樂及相關資訊</div>
+                        <h1 class="tagline"><%=i18n.GetMessage("m1")%></h1>
+                        <div class="subheading tagline"><%=i18n.GetMessage("m11")%></div>
                     </div>
                 </div>
             </div>

@@ -8,9 +8,9 @@
         var gPageSize = <%=PageSize%>;
         $(document).ready(function () {
             var pagerOption = {
-                PreviousPage: "上一頁",
-                NextPage: "下一頁",
-                Info: "總共有 {0} 篇文章，共 {1} 頁"
+                PreviousPage: "<%=i18n.GetMessage("m20")%>",
+                NextPage: "<%=i18n.GetMessage("m21")%>",
+                Info: "<%=i18n.GetMessage("m22")%>"
             };
             InitPager(pagerOption);
             WriteArticles();
@@ -47,7 +47,7 @@
             }
 
             if (totalCount <= 0) {
-                $("#articles").html(GetNoDataStyle());
+                $("#articles").html(GetNoDataStyle("<%=i18n.GetMessage("m31")%>"));
                 return;
             }
 
@@ -61,10 +61,10 @@
                 html += "</td>"
                 html += "<td align=\"right\">";
                 html += "<button id=\"edit-" + n.ArticleId + "\" type=\"button\" class=\"btn btn-warning btn-edit\">";
-                html += "編輯";
+                html += "<%=i18n.GetMessage("m38")%>";
                 html += "</button>";
                 html += "<button id=\"delete-" + n.ArticleId + "\" type=\"button\" class=\"btn btn-danger btn-delete\">";
-                html += "刪除";
+                html += "<%=i18n.GetMessage("m39")%>";
                 html += "</button>";
                 html += "</td>";
                 html += "</tr>"
@@ -79,14 +79,14 @@
             });
             
             $(".btn-delete").click(function() {
-                if(confirm("確定刪除？")) {
+                if(confirm("<%=i18n.GetMessage("m49")%>")) {
                     var articleId = this.id.split('-')[1];
                     var param = "cmd=delete" +
                         "&articleid=" + articleId;
                     $.post(articleServiceUrl, param, function (data) {
                         var result = $.parseJSON(data);
                         if (result.Success) {
-                            alert("刪除成功");
+                            alert("<%=i18n.GetMessage("m50")%>");
                             WriteArticles();
                         } else {
                             Alert(result.Message);
@@ -104,9 +104,9 @@
             vertical-align: middle !important;
         }
     </style>
-    <button type="button" class="btn btn-primary" id="btn-create">建立文章</button>
-    <button type="button" class="btn btn-success" id="btn-back">返回網站</button>
-    <button type="button" class="btn btn-default" id="btn-logout" style="float:right; margin-right:14px;">登出</button>
+    <button type="button" class="btn btn-primary" id="btn-create"><%=i18n.GetMessage("m36")%></button>
+    <button type="button" class="btn btn-success" id="btn-back"><%=i18n.GetMessage("m37")%></button>
+    <button type="button" class="btn btn-default" id="btn-logout" style="float:right; margin-right:14px;"><%=i18n.GetMessage("m35")%></button>
     <table class="table table-hover">
         <thead>
           <tr>

@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Liquid Trouse 電音誌</title>
+    <title><%=i18n.GetMessage("m1")%></title>
     <link rel="icon" href="image/logo.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="image/logo.ico" type="image/x-icon" />
     <link rel="bookmark" href="image/logo.ico" type="image/x-icon" />
@@ -22,7 +22,6 @@
     <script type="text/javascript">
         var rootUrl = "<%=Request.ApplicationPath%>";
         var tagServiceUrl = rootUrl + "/service/ajaxtagservice.aspx";
-
         $(document).ready(function () {
 
             $(document).keypress(function (e) {
@@ -101,20 +100,20 @@
                 <ul class="nav navbar-nav navbar-right">
                     <% if (IsAdmin) { %>
                     <li>
-                        <a href="<%=Request.ApplicationPath %>/management/list" id="management"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;管理</a>
+                        <a href="<%=Request.ApplicationPath %>/management/list" id="management"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;<%=i18n.GetMessage("m19")%></a>
                     </li>
                     <% } %>
                     <li>
-                        <a href="<%=Request.ApplicationPath %>/default" id="home"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;首頁</a>
+                        <a href="<%=Request.ApplicationPath %>/default" id="home"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;<%=i18n.GetMessage("m15")%></a>
                     </li>
                     <li>
-                        <a href="<%=Request.ApplicationPath %>/about" id="about"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;關於我</a>
+                        <a href="<%=Request.ApplicationPath %>/about" id="about"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;<%=i18n.GetMessage("m16")%></a>
                     </li>
                     <li>
-                        <a href="javascript:void(0);" id="tag"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;標籤</a>
+                        <a href="javascript:void(0);" id="tag"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;<%=i18n.GetMessage("m17")%></a>
                     </li>
                     <li>
-                        <a href="javascript:void(0);" id="search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;搜尋</a>
+                        <a href="javascript:void(0);" id="search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;<%=i18n.GetMessage("m18")%></a>
                     </li>
                 </ul>
             </div>
@@ -133,7 +132,7 @@
         <footer>
             <div class="row">
                 <div class="col-lg-12" style="text-align: center;">
-                    <p>Copyright &copy; 2017 Liquid Trouse 電音誌.</p>
+                    <p>Copyright &copy; <%=i18n.GetMessage("m1")%>.</p>
                 </div>
             </div>
         </footer>
@@ -150,7 +149,7 @@
                     </div>
                     <div class="container">
                         <div class="input-group input-group-lg">
-                            <input id="keyword" type="text" class="form-control" placeholder="搜尋...">
+                            <input id="keyword" type="text" class="form-control" placeholder="<%=i18n.GetMessage("m18")%>...">
                             <div class="input-group-btn">
                                 <button id="btn-search" class="btn btn-default" type="button">
                                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span>

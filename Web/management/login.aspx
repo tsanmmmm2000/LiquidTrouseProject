@@ -7,13 +7,20 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Liquid Trouse 電音誌</title>
+    <title><%=i18n.GetMessage("m1")%></title>
     <link rel="icon" href="../image/logo.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="../image/logo.ico" type="image/x-icon" />
     <link rel="bookmark" href="image/logo.ico" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="<%=Request.ApplicationPath%>/bootstrap/css/bootstrap.min.css<%="" + Global.Quid%>" />
     <script type="text/javascript" src="<%=Request.ApplicationPath%>/js/jquery-1.11.2.js<%="" + Global.Quid%>""></script>
     <script type="text/javascript" src="<%=Request.ApplicationPath%>/bootstrap/js/bootstrap.min.js<%=Global.Quid %>"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#txtUserName").attr("placeholder", "<%=i18n.GetMessage("m32")%>");
+            $("#txtPassword").attr("placeholder", "<%=i18n.GetMessage("m33")%>");
+            $("#LoginButton").val("<%=i18n.GetMessage("m34")%>");
+        });
+    </script>
     <style type="text/css">
         .logo-img {
 	        width: 95px;
@@ -48,7 +55,7 @@
 												<span class="input-group-addon">
 													<i class="glyphicon glyphicon-user"></i>
 												</span> 
-												<input class="form-control" type="text" name="txtUserName" id="txtUserName" placeholder="使用者名稱" runat="server" autofocus />
+												<input class="form-control" type="text" name="txtUserName" id="txtUserName" placeholder="" runat="server" autofocus />
 											</div>
                                             <span id="userNameRequired" style="color: Red; visibility: hidden;" runat="server">*</span>
 										</div>
@@ -57,12 +64,12 @@
 												<span class="input-group-addon">
 													<i class="glyphicon glyphicon-lock"></i>
 												</span>
-												<input class="form-control" type="password" name="txtPassword" id="txtPassword" placeholder="密碼" runat="server" />
+												<input class="form-control" type="password" name="txtPassword" id="txtPassword" placeholder="" runat="server" />
 											</div>
                                             <span id="passwordRequired" style="color: Red; visibility: hidden;" runat="server">*</span>
 										</div>
                                         <div class="form-group">
-                                            <asp:Button ID="LoginButton" runat="server" Text="登入" OnClick="LoginButtonClick" CssClass="btn btn-lg btn-primary btn-block"/>
+                                            <asp:Button ID="LoginButton" runat="server" Text="" OnClick="LoginButtonClick" CssClass="btn btn-lg btn-primary btn-block"/>
 										</div>
                                         <div align="center" id="txtFailure" style="color: Red; visibility: hidden;" runat="server" />
 									</div>
@@ -71,7 +78,7 @@
 						</form>
 					</div>
                     <div class="panel-footer">
-                        <a href="<%=Request.ApplicationPath %>/default">返回網站</a>
+                        <a href="<%=Request.ApplicationPath %>/default"><%=i18n.GetMessage("m37")%></a>
                     </div>
                 </div>
 			</div>

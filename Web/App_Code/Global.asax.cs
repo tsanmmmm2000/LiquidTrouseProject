@@ -35,7 +35,7 @@ public partial class Global : System.Web.HttpApplication
     {
         // 在應用程式啟動時執行的程式碼
         log4net.Config.XmlConfigurator.Configure();
-        Log = log4net.LogManager.GetLogger("LT");
+        Log = log4net.LogManager.GetLogger("LQTS");
         RegisterRoutes(RouteTable.Routes);
     }
 

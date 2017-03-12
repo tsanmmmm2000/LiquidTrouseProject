@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LiquidTrouse.Core.Globalization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,6 +14,7 @@ public partial class searchresult : System.Web.UI.Page
     protected string TagDisplayName;
     protected int PageIndex;
     protected int PageSize;
+    protected i18nHelper i18n;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -22,5 +24,6 @@ public partial class searchresult : System.Web.UI.Page
         TagDisplayName =  HttpUtility.HtmlDecode(WebUtility.GetRoutingStringParameter(this.Page, "tag", string.Empty));
         PageIndex = WebUtility.GetRoutingIntegerParameter(this.Page, "pageindex", 0);
         PageSize = WebUtility.GetRoutingIntegerParameter(this.Page, "pagesize", 10);
+        i18n = new i18nHelper();
     }
 }

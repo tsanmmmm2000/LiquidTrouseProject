@@ -7,12 +7,15 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using LiquidTrouse.Core.Globalization;
 
 public partial class management_editarticle : System.Web.UI.Page
 {
     private IArticleService _articleService;
     private ITagService _tagService;
     private UserInfo _currentUser;
+
+    protected i18nHelper i18n;
 
     protected int ArticleId;
 
@@ -23,6 +26,7 @@ public partial class management_editarticle : System.Web.UI.Page
         _articleService = factory.GetArticleService();
         _tagService = factory.GetTagService();
         ArticleId = WebUtility.GetRoutingIntegerParameter(this.Page, "articleid");
+        i18n = new i18nHelper();
         RegistHiddenField();
     }
 

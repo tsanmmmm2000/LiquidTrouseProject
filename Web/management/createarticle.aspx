@@ -18,13 +18,13 @@
                 var editorValue = CKEDITOR.instances.editor.getData();
                 var title = $("#article-title").val();
                 if (title == null || title == "") {
-                    alert("標題為必填");
+                    alert("<%=i18n.GetMessage("m51")%>");
                     return;
                 }
 
                 var urlTitle = $("#url-title").val();
                 if (urlTitle == null || urlTitle == "") {
-                    alert("網址標題為必填");
+                    alert("<%=i18n.GetMessage("m52")%>");
                     return;
                 }
                 var param = "cmd=create" +
@@ -42,7 +42,7 @@
                     var result = $.parseJSON(data);
                     var redirecturl = rootUrl + "/management/list";
                     if (result.Success) {
-                        alert("建立成功");
+                        alert("<%=i18n.GetMessage("m53")%>");
                         window.location.href = redirecturl;
                     } else {
                         AlertMessage(result);
@@ -161,9 +161,9 @@
         <table>
             <tr>
                 <td>
-				    <button type="button" class="btn btn-primary" id="btn-submit">送出</button>
-                    <button type="button" class="btn btn-success" id="btn-draft">儲存草稿</button>
-                    <button type="button" class="btn btn-default" id="btn-cancel">取消</button>            					
+				    <button type="button" class="btn btn-primary" id="btn-submit"><%=i18n.GetMessage("m45")%></button>
+                    <button type="button" class="btn btn-success" id="btn-draft"><%=i18n.GetMessage("m44")%></button>
+                    <button type="button" class="btn btn-default" id="btn-cancel"><%=i18n.GetMessage("m41")%></button>            					
                 </td>
             </tr>
             <tr>
@@ -177,29 +177,29 @@
                 </td>
                 <td valign="top" width="30%">
 				    <div class="input-group">
-					    <span class="input-group-addon">標題</span>
+					    <span class="input-group-addon"><%=i18n.GetMessage("m28")%></span>
 					    <input type="text" class="form-control" id="article-title" placeholder="example">
 				    </div>
                     <br/>
 				    <div class="input-group">
-					    <span class="input-group-addon">首圖連結</span>
+					    <span class="input-group-addon"><%=i18n.GetMessage("m42")%></span>
 					    <input type="text" class="form-control" id="cover-image-url" placeholder="http://example/example.jpg">
 				    </div>					  
                     <br/>
 				    <div class="input-group">
 					    <span class="input-group-addon">http://yourdomain/liquidtrouse/article/</span>
-					    <input type="text" class="form-control" id="url-title" placeholder="網址標題">
+					    <input type="text" class="form-control" id="url-title" placeholder="<%=i18n.GetMessage("m43")%>">
 					    <span class="input-group-addon">/</span>					
 				    </div>
 				    <br/>
                     <div class="input-group date" id="datetimepicker">
-                        <input type="text" class="form-control" id="creation-date" placeholder="建立時間">
+                        <input type="text" class="form-control" id="creation-date" placeholder="<%=i18n.GetMessage("m25")%>">
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                     </div>
 				    <br/>
-                    <textarea class="form-control" rows="5" id="tags" placeholder="標籤"></textarea>
+                    <textarea class="form-control" rows="5" id="tags" placeholder="<%=i18n.GetMessage("m17")%>"></textarea>
                     <div class="tag-options" id="tag-options"></div>
                 </td>
             </tr>

@@ -3,7 +3,7 @@ var PagerAgent = function (opts) {
 	var defaults = {
 		PreviousPage: "Previous",
 		NextPage: "Next",
-		Info: "{0} articles, {1} pages total"
+		Info: "{0} Articles, {1} Pages Total"
 	};
 	
 	var options = opts || {};
@@ -37,8 +37,8 @@ var PagerAgent = function (opts) {
 			pagerHtml += "</li>";
 		}
 
-		var showPreviousTen = (minIndex > 0);
-		if (showPreviousTen) {
+		var showPreviousPageGroup = (minIndex > 0);
+		if (showPreviousPageGroup) {
 		    pagerHtml += "<li>";
 		    pagerHtml += "<a style=\"cursor:pointer\" onclick=\"javascript:UpdatePage(" + (minIndex - 1) + "," + pageSize + ")\">" + "..." + "</a>&nbsp;";
 		    pagerHtml += "</li>";
@@ -51,8 +51,8 @@ var PagerAgent = function (opts) {
 			pagerHtml += "</li>";
 		}
 
-		var showNextTen = (maxIndex + 1 < pageCount);
-		if (showNextTen) {
+		var showNextPageGroup = (maxIndex + 1 < pageCount);
+		if (showNextPageGroup) {
 		    pagerHtml += "<li>";
 		    pagerHtml += "<a style=\"cursor:pointer\" onclick=\"javascript:UpdatePage(" + (maxIndex + 1) + "," + pageSize + ")\">" + "..." + "</a>&nbsp;";
 		    pagerHtml += "</li>";

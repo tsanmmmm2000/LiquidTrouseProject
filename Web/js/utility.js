@@ -22,7 +22,7 @@ function SimpleHtmlEncode(value) {
 function SimpleHtmlDecode(value) {
     return $('<div/>').html(value).text();
 }
-function RenderResult(rootUrl, articelObj, offset) {
+function RenderResult(rootUrl, articelObj, offset, readMoreText) {
     var html = "";
     html += "<div class=\"row\">";
     html += "<div class=\"col-md-4\">";
@@ -50,7 +50,7 @@ function RenderResult(rootUrl, articelObj, offset) {
     html += "&nbsp;...";
     html += "</p>";
     html += "<a class=\"btn btn-primary\" href=\"" + articleUrl + "\">";
-    html += "閱讀更多&nbsp;";
+    html += readMoreText + "&nbsp;";
     html += "<span class=\"glyphicon glyphicon-chevron-right\"></span>";
     html += "</a>";
     html += "</div>";
@@ -144,6 +144,6 @@ function AlertMessage(message) {
 	$(".alert-danger").show();
 	$(".alert-danger").html(message);
 }
-function GetNoDataStyle() {
-    return "<h4>查無文章</h4>";
+function GetNoDataStyle(message) {
+    return "<h4>" + message + "</h4>";
 }

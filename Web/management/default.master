@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Liquid Trouse 電音誌</title>
+    <title><%=i18n.GetMessage("m1")%></title>
     <link rel="icon" href="../image/logo.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="../image/logo.ico" type="image/x-icon" />
     <link rel="bookmark" href="image/logo.ico" type="image/x-icon" />

@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Liquid Trouse 電音誌</title>
+    <title><%=i18n.GetMessage("m1")%></title>
     <link rel="icon" href="../image/logo.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="../image/logo.ico" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="<%=Request.ApplicationPath%>/bootstrap/css/bootstrap.min.css<%="" + Global.Quid%>" />
@@ -19,9 +19,9 @@
         <form id="form1" runat="server">
             <div class="container">
                 <div class="jumbotron" style="margin-top: 50px;">
-                  <h2>抱歉，發生未預期的錯誤</h2>
+                  <h2><%=i18n.GetMessage("m47")%></h2>
                   <br/>
-                  <a class="btn btn-primary btn-lg" href="default" role="button">按此離開</a>
+                  <a class="btn btn-primary btn-lg" href="default" role="button"><%=i18n.GetMessage("m48")%></a>
                 </div>
             </div>
         </form>

@@ -12,9 +12,6 @@ public partial class management_logout : System.Web.UI.Page
     {
         WebUtility.SignOut();
         var query = WebUtility.GetRoutingStringParameter(this.Page, "ReturnUrl");
-        //var url = (!String.IsNullOrEmpty(query))
-        //    ? String.Format("{0}?ReturnUrl={1}", FormsAuthentication.LoginUrl, HttpUtility.UrlEncode(query))
-        //    : FormsAuthentication.DefaultUrl;
         var url = (!String.IsNullOrEmpty(query)) ? query : Request.ApplicationPath + "/management/list";
         Response.Redirect(url, false);
     }

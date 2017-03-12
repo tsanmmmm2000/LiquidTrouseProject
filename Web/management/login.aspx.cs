@@ -1,4 +1,5 @@
 ﻿using LiquidTrouse.Core.AccountManager;
+using LiquidTrouse.Core.Globalization;
 using System;
 using System.Web;
 using System.Web.Security;
@@ -7,9 +8,12 @@ public partial class management_login : System.Web.UI.Page
 {
     private IAccountManager _accountManager;
 
+    protected i18nHelper i18n;
+
     protected void Page_Load(object sender, EventArgs e)
     {
         _accountManager = AccountUtility.AccountManagerRepository.GetAccountManager();
+        i18n = new i18nHelper();
     }
 
     protected void LoginButtonClick(object sender, EventArgs e)
@@ -28,13 +32,22 @@ public partial class management_login : System.Web.UI.Page
             var loginId = txtUserName.Value.Trim();
             SetFormsAuthTicketAndCookies(loginId);
             var query = WebUtility.GetRoutingStringParameter(this.Page, "ReturnUrl");
-            var url = (!String.IsNullOrEmpty(query)) ? query : Request.ApplicationPath + "/management/list";
+            var url = (!String.IsNullOrEmpty(query) && !IsSelf(query))
+                ? query
+                : Request.ApplicationPath + "/management/list";
             Response.Redirect(url, false);
         }
         else
         {
-            SetFailureHint("登入嘗試失敗，請再試一次。");
+            SetFailureHint(i18n.GetMessage("m56"));
         }
+    }
+
+    private bool IsSelf(string url)
+    {
+        return (FormsAuthentication.LoginUrl.Equals(url + ".aspx", StringComparison.InvariantCultureIgnoreCase))
+            ? true
+            : false;
     }
 
     private void SetFormsAuthTicketAndCookies(string loginId)
@@ -44,7 +57,7 @@ public partial class management_login : System.Web.UI.Page
         var guid = Guid.NewGuid().ToString();
         var authTicketUserData = String.Format("{0}^{1}", userId, guid);
         var ticket = new FormsAuthenticationTicket(1, loginId, DateTime.UtcNow, DateTime.Now.AddMinutes(30), false, authTicketUserData);
-        string hashTicket = FormsAuthentication.Encrypt(ticket);
+        var hashTicket = FormsAuthentication.Encrypt(ticket);
         var userCookie = new HttpCookie(FormsAuthentication.FormsCookieName, hashTicket);
         Response.Cookies.Add(userCookie);
     }
@@ -66,7 +79,7 @@ public partial class management_login : System.Web.UI.Page
         catch (Exception ex)
         {
             Global.Log.Error(ex.Message, ex);
-            SetFailureHint("帳號檢查失敗！");
+            SetFailureHint(i18n.GetMessage("m57"));
             return authenticate;
         }
     }

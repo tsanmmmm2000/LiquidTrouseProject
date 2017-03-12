@@ -8,7 +8,7 @@ namespace LiquidTrouse.Core
     public class Utility
     {
         private static IApplicationContext _ctx;
-        private static readonly ILog Logger = LogManager.GetLogger("LT");
+        private static readonly ILog Logger = LogManager.GetLogger("LQTS");
 
         public static IApplicationContext ApplicationContext
         {
