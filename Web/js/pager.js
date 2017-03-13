@@ -6,7 +6,7 @@ var PagerAgent = function (opts) {
 		Info: "{0} Articles, {1} Pages Total"
 	};
 	
-	var options = opts || {};
+    var options = opts || {};
 
     var settings = $.extend({}, defaults, options);
     var previousPage = settings.PreviousPage;

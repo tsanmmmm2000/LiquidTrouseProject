@@ -55,16 +55,23 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LQTS.en.resx</DependentUpon>
     </Compile>
+    <Compile Include="LQTS.zh-TW1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LQTS.zh-TW.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="LQTS.en.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>LQTS.en.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="LQTS.zh-TW.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>LQTS.zh-TW1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

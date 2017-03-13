@@ -120,6 +120,30 @@
   <data name="m1" xml:space="preserve">
     <value>Liquid Trouse 電音誌</value>
   </data>
+  <data name="m2" xml:space="preserve">
+    <value>Trouse，既是 Trance Music，也是 House Music</value>
+  </data>
+  <data name="m3" xml:space="preserve">
+    <value>Liquid Spirit，是文化的根源，是孕育萬物的能量，更有著無限的包容</value>
+  </data>
+  <data name="m4" xml:space="preserve">
+    <value>它，帶來快樂也帶走憂傷，是對生命態度的執著</value>
+  </data>
+  <data name="m5" xml:space="preserve">
+    <value>將兩者放在一起，Liquid Trouse 便是象徵著美好的體驗</value>
+  </data>
+  <data name="m6" xml:space="preserve">
+    <value>在這裡，我們分享 Trouse Music，集結同好並彼此交流</value>
+  </data>
+  <data name="m7" xml:space="preserve">
+    <value>在這裡，我們希望能讓更多台灣人認識 Trance &amp; House 文化，大家一起學習一起成長</value>
+  </data>
+  <data name="m8" xml:space="preserve">
+    <value>在這裡，我們秉持 Liquid Spirit，找回聽音樂的初衷，感受音樂就如同感受水的溫柔</value>
+  </data>
+  <data name="m9" xml:space="preserve">
+    <value>音樂，它無時無刻環繞於我們四周，帶給我們快樂及正面的能量，使我們面對更多挑戰</value>
+  </data>
   <data name="m10" xml:space="preserve">
     <value>歡迎來到 Liquid Trouse 電音誌，與我們一起釋放心靈感受音樂的饗宴吧</value>
   </data>
@@ -149,9 +173,6 @@
   </data>
   <data name="m19" xml:space="preserve">
     <value>管理</value>
-  </data>
-  <data name="m2" xml:space="preserve">
-    <value>Trouse，既是 Trance Music，也是 House Music</value>
   </data>
   <data name="m20" xml:space="preserve">
     <value>上一頁</value>
@@ -183,9 +204,6 @@
   <data name="m29" xml:space="preserve">
     <value>搜尋標籤</value>
   </data>
-  <data name="m3" xml:space="preserve">
-    <value>Liquid Spirit，是文化的根源，是孕育萬物的能量，更有著無限的包容</value>
-  </data>
   <data name="m30" xml:space="preserve">
     <value>搜尋關鍵字</value>
   </data>
@@ -215,9 +233,6 @@
   </data>
   <data name="m39" xml:space="preserve">
     <value>刪除</value>
-  </data>
-  <data name="m4" xml:space="preserve">
-    <value>它，帶來快樂也帶走憂傷，是對生命態度的執著</value>
   </data>
   <data name="m40" xml:space="preserve">
     <value>更新</value>
@@ -249,9 +264,6 @@
   <data name="m49" xml:space="preserve">
     <value>確定刪除？</value>
   </data>
-  <data name="m5" xml:space="preserve">
-    <value>將兩者放在一起，Liquid Trouse 便是象徵著美好的體驗</value>
-  </data>
   <data name="m50" xml:space="preserve">
     <value>刪除成功</value>
   </data>
@@ -275,17 +287,5 @@
   </data>
   <data name="m57" xml:space="preserve">
     <value>帳號檢查失敗</value>
-  </data>
-  <data name="m6" xml:space="preserve">
-    <value>在這裡，我們分享 Trouse Music，集結同好並彼此交流</value>
-  </data>
-  <data name="m7" xml:space="preserve">
-    <value>在這裡，我們希望能讓更多台灣人認識 Trance &amp; House 文化，大家一起學習一起成長</value>
-  </data>
-  <data name="m8" xml:space="preserve">
-    <value>在這裡，我們秉持 Liquid Spirit，找回聽音樂的初衷，感受音樂就如同感受水的溫柔</value>
-  </data>
-  <data name="m9" xml:space="preserve">
-    <value>音樂，它無時無刻環繞於我們四周，帶給我們快樂及正面的能量，使我們面對更多挑戰</value>
   </data>
 </root>
