@@ -51,6 +51,7 @@
     </Compile>
     <Compile Include="CacheRepositoryFactory.cs" />
     <Compile Include="CacheUtility.cs" />
+    <Compile Include="Domain\CacheKey.cs" />
     <Compile Include="Domain\CacheObject.cs" />
     <Compile Include="ICacheService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

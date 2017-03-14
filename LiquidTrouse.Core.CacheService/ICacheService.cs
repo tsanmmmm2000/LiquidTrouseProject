@@ -9,12 +9,12 @@ namespace LiquidTrouse.Core.CacheService
 {
     public interface ICacheService
     {
-        CacheObject Set(string cacheKey, CacheObject cacheObject);
-        CacheObject Get<T>(string cacheKey, Func<T> GetDataCallback) where T : class;
-        CacheObject Get(string cacheKey);
-        void Remove(string cacheKey);
+        CacheObject Set(CacheKey cacheKey, CacheObject cacheObject);
+        CacheObject Get<T>(CacheKey cacheKey, Func<T> GetDataCallback) where T : class;
+        CacheObject Get(CacheKey cacheKey);
+        void Remove(CacheKey cacheKey);
         void Clear();
-        bool Contains(string cacheKey);
+        bool Contains(CacheKey cacheKey);
         IDictionaryEnumerator GetEnumerator();
     }
 }

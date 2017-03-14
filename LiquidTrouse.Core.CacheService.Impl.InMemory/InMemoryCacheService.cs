@@ -37,9 +37,9 @@ namespace LiquidTrouse.Core.CacheService.Impl.InMemory
 
         public InMemoryCacheService() { }
 
-        public CacheObject Get<T>(string cacheKey, Func<T> GetDataCallback) where T : class
+        public CacheObject Get<T>(CacheKey cacheKey, Func<T> GetDataCallback) where T : class
         {
-            var cacheObject = _cache.Get(cacheKey) as CacheObject;
+            var cacheObject = _cache.Get(cacheKey.KeyName) as CacheObject;
             if (cacheObject == null)
             {
                 cacheObject = new CacheObject();
@@ -49,11 +49,11 @@ namespace LiquidTrouse.Core.CacheService.Impl.InMemory
             }
             return cacheObject;
         }
-        public CacheObject Get(string cacheKey)
+        public CacheObject Get(CacheKey cacheKey)
         {
-            return _cache.Get(cacheKey) as CacheObject;
+            return _cache.Get(cacheKey.KeyName) as CacheObject;
         }
-        public CacheObject Set(string cacheKey, CacheObject cacheObject)
+        public CacheObject Set(CacheKey cacheKey, CacheObject cacheObject)
         {
             lock (this)
             {
@@ -62,7 +62,7 @@ namespace LiquidTrouse.Core.CacheService.Impl.InMemory
                     var policy = new CacheItemPolicy();
                     policy.AbsoluteExpiration = DateTime.SpecifyKind(cacheObject.AbsoluteExpiration, DateTimeKind.Utc);
                     policy.SlidingExpiration = cacheObject.SlidingExpiration;
-                    _cache.Set(cacheKey, cacheObject, policy);
+                    _cache.Set(cacheKey.KeyName, cacheObject, policy);
                 }
                 catch (Exception ex)
                 {
@@ -71,13 +71,13 @@ namespace LiquidTrouse.Core.CacheService.Impl.InMemory
                 return cacheObject;
             }
         }
-        public void Remove(string cacheKey)
+        public void Remove(CacheKey cacheKey)
         {
             lock (this)
             {
                 try
                 {
-                    _cache.Remove(cacheKey);
+                    _cache.Remove(cacheKey.KeyName);
                 }
                 catch (Exception ex)
                 {
@@ -85,9 +85,9 @@ namespace LiquidTrouse.Core.CacheService.Impl.InMemory
                 }
             }
         }
-        public bool Contains(string cacheKey)
+        public bool Contains(CacheKey cacheKey)
         {
-            return _cache.Contains(cacheKey);
+            return _cache.Contains(cacheKey.KeyName);
         }
         public void Clear()
         {
@@ -101,9 +101,9 @@ namespace LiquidTrouse.Core.CacheService.Impl.InMemory
                 var cacheEnum = _cache.GetEnumerator();
                 while (cacheEnum.MoveNext())
                 {
-                    var cacheKey = cacheEnum.Current.Key;
+                    var keyName = cacheEnum.Current.Key;
                     var cacheObject = cacheEnum.Current.Value as CacheObject;
-                    hashTable.Add(cacheKey, cacheObject);
+                    hashTable.Add(new CacheKey(keyName), cacheObject);
                 }
             }
             catch (Exception ex)
@@ -142,7 +142,7 @@ namespace LiquidTrouse.Core.CacheService.Impl.InMemory
                             var cacheEnum = formatter.Deserialize(fs) as IDictionaryEnumerator;
                             while (cacheEnum.MoveNext())
                             {
-                                var cacheKey = cacheEnum.Key.ToString();
+                                var cacheKey = cacheEnum.Key as CacheKey;
                                 var cacheObject = cacheEnum.Value as CacheObject;
                                 Set(cacheKey, cacheObject);
                             } 
