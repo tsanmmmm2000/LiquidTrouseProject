@@ -1,10 +1,10 @@
 var PagerAgent = function (opts) {
 	
-	var defaults = {
-		PreviousPage: "Previous",
-		NextPage: "Next",
-		Info: "{0} Articles, {1} Pages Total"
-	};
+    var defaults = {
+	    PreviousPage: "Previous",
+	    NextPage: "Next",
+	    Info: "{0} Articles, {1} Pages Total"
+    };
 	
     var options = opts || {};
 
@@ -29,43 +29,43 @@ var PagerAgent = function (opts) {
         var minIndex = CalMinIndex(pageIndex);
         var maxIndex = CalMaxIndex(pageIndex, pageCount);
 
-		var pagerHtml = "";
+        var pagerHtml = "";
 		
-		if (pageIndex > 0) {
-			pagerHtml += "<li class=\"previous\">";
-			pagerHtml += "<a style=\"cursor:pointer\" onclick=\"javascript:UpdatePage(" + (pageIndex - 1) + "," + pageSize + ")\">&laquo;" + previousPage + "</a>";
-			pagerHtml += "</li>";
-		}
+        if (pageIndex > 0) {
+	        pagerHtml += "<li class=\"previous\">";
+	        pagerHtml += "<a style=\"cursor:pointer\" onclick=\"javascript:UpdatePage(" + (pageIndex - 1) + "," + pageSize + ")\">&laquo;" + previousPage + "</a>";
+	        pagerHtml += "</li>";
+        }
 
-		var showPreviousPageGroup = (minIndex > 0);
-		if (showPreviousPageGroup) {
-		    pagerHtml += "<li>";
-		    pagerHtml += "<a style=\"cursor:pointer\" onclick=\"javascript:UpdatePage(" + (minIndex - 1) + "," + pageSize + ")\">" + "..." + "</a>&nbsp;";
-		    pagerHtml += "</li>";
-		}
+        var showPreviousPageGroup = (minIndex > 0);
+        if (showPreviousPageGroup) {
+	        pagerHtml += "<li>";
+	        pagerHtml += "<a style=\"cursor:pointer\" onclick=\"javascript:UpdatePage(" + (minIndex - 1) + "," + pageSize + ")\">" + "..." + "</a>&nbsp;";
+	        pagerHtml += "</li>";
+        }
 		
-		for (var i = minIndex; i <= maxIndex; i++) {
-			var style = (i == pageIndex) ? "active" : "inactive"; 
-			pagerHtml += "<li>";
-			pagerHtml += "<a style=\"cursor:pointer\" class=\"" + style + "\" onclick=\"javascript:UpdatePage(" + i + "," + pageSize + ")\">" + (i + 1) + "</a>&nbsp;";
-			pagerHtml += "</li>";
-		}
+        for (var i = minIndex; i <= maxIndex; i++) {
+	        var style = (i == pageIndex) ? "active" : "inactive"; 
+	        pagerHtml += "<li>";
+	        pagerHtml += "<a style=\"cursor:pointer\" class=\"" + style + "\" onclick=\"javascript:UpdatePage(" + i + "," + pageSize + ")\">" + (i + 1) + "</a>&nbsp;";
+	        pagerHtml += "</li>";
+        }
 
-		var showNextPageGroup = (maxIndex + 1 < pageCount);
-		if (showNextPageGroup) {
-		    pagerHtml += "<li>";
-		    pagerHtml += "<a style=\"cursor:pointer\" onclick=\"javascript:UpdatePage(" + (maxIndex + 1) + "," + pageSize + ")\">" + "..." + "</a>&nbsp;";
-		    pagerHtml += "</li>";
-		}
+        var showNextPageGroup = (maxIndex + 1 < pageCount);
+        if (showNextPageGroup) {
+	        pagerHtml += "<li>";
+	        pagerHtml += "<a style=\"cursor:pointer\" onclick=\"javascript:UpdatePage(" + (maxIndex + 1) + "," + pageSize + ")\">" + "..." + "</a>&nbsp;";
+	        pagerHtml += "</li>";
+        }
 		
-		if (pageIndex >= 0 && pageIndex + 1 < pageCount) {
-			pagerHtml += "<li class=\"next\">";
-			pagerHtml += "<a style=\"cursor:pointer\" onclick=\"javascript:UpdatePage(" + (pageIndex + 1) + "," + pageSize + ")\">" + nextPage + "&raquo;</a>";
-			pagerHtml += "</li>";
-		}
+        if (pageIndex >= 0 && pageIndex + 1 < pageCount) {
+	        pagerHtml += "<li class=\"next\">";
+	        pagerHtml += "<a style=\"cursor:pointer\" onclick=\"javascript:UpdatePage(" + (pageIndex + 1) + "," + pageSize + ")\">" + nextPage + "&raquo;</a>";
+	        pagerHtml += "</li>";
+        }
 
-		$("#pager").html(pagerHtml);
-	}
+        $("#pager").html(pagerHtml);
+    }
     var CalMinIndex = function (pageIndex) {
         var offset = 4;
         var minIndex = pageIndex - offset;

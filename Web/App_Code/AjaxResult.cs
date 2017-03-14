@@ -10,7 +10,6 @@ using System.Web.UI.HtmlControls;
 
 public sealed class AjaxResult
 {
-
     private bool success = false;
     private string message = string.Empty;
     private Object data = null;

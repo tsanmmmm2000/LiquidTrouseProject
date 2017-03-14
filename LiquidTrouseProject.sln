@@ -38,6 +38,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiquidTrouse.Core.Blog.Data
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiquidTrouse.Core.Blog.Service", "LiquidTrouse.Core.Blog.Service\LiquidTrouse.Core.Blog.Service.csproj", "{FB75D401-1106-4D72-B566-16984BA92576}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiquidTrouse.Core.CacheService", "LiquidTrouse.Core.CacheService\LiquidTrouse.Core.CacheService.csproj", "{3F5147A0-F344-42F9-BCD2-E8386FEFAD79}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiquidTrouse.Core.CacheService.Impl.InMemory", "LiquidTrouse.Core.CacheService.Impl.InMemory\LiquidTrouse.Core.CacheService.Impl.InMemory.csproj", "{1825740D-5E1E-418A-B2C7-25435CCE4CBC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -76,6 +80,14 @@ Global
 		{FB75D401-1106-4D72-B566-16984BA92576}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB75D401-1106-4D72-B566-16984BA92576}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB75D401-1106-4D72-B566-16984BA92576}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F5147A0-F344-42F9-BCD2-E8386FEFAD79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F5147A0-F344-42F9-BCD2-E8386FEFAD79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F5147A0-F344-42F9-BCD2-E8386FEFAD79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F5147A0-F344-42F9-BCD2-E8386FEFAD79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1825740D-5E1E-418A-B2C7-25435CCE4CBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1825740D-5E1E-418A-B2C7-25435CCE4CBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1825740D-5E1E-418A-B2C7-25435CCE4CBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1825740D-5E1E-418A-B2C7-25435CCE4CBC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

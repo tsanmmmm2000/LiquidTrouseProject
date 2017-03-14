@@ -168,7 +168,7 @@ public class WebUtility
         var identity = GetCurrentIdentity();
         return (identity != null) ? identity.User : AccountUtility.AssignGuestUser();
     }
-	public static TimeSpan GetCurrentUserUTCOffset()
+    public static TimeSpan GetCurrentUserUTCOffset()
     {
         return GetUserUTCOffset(GetCurrentUser());
     }
@@ -215,7 +215,6 @@ public class WebUtility
         return new DateTime(year, month, date, hour, minute, second, DateTimeKind.Utc);
     }
 
-
     private static string ToAntiXSSHtmlEncode(string s)
     {
         return Microsoft.Security.Application.Encoder.HtmlEncode(s);
@@ -241,5 +240,4 @@ public class WebUtility
         }
         return null;
     }
-
 }

@@ -125,6 +125,10 @@
     <property name="Salt" value="+_)(()_+" />
     <property name="ConfigFilePath" value="${data.dir}\Config" />
   </object>
+  <object id="CacheService" type="LiquidTrouse.Core.CacheService.Impl.InMemory.InMemoryCacheService, LiquidTrouse.Core.CacheService.Impl.InMemory">
+    <property name="PersistStoragePath" value="${data.dir}" />
+    <property name="EnablePersistence" value="false" />
+  </object>  
   <object id="NHibernateArticleDao" type="LiquidTrouse.Core.Blog.DataAccess.Impl.NHibernate.NHibernateArticleDao, LiquidTrouse.Core.Blog.DataAccess.Impl.NHibernate">
     <property name="SessionFactory" ref="NHibernateSessionFactory" />
   </object>
