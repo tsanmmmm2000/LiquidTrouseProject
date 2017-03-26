@@ -13,8 +13,8 @@ namespace LiquidTrouse.Core.CacheService.Impl.InMemory
     public class InMemoryCacheService : ICacheService
     {
         private static readonly InMemoryCache _cache = new InMemoryCache();
+        private static IDictionary<CacheKey, CacheObject> _presistCacheObjects = new Dictionary<CacheKey, CacheObject>();
         private const string PersistenceFileName = "persistence.dat";
-        private bool _alreadyPersisted = false;
 
         private string _persistStoragePath = string.Empty;
         public string PersistStoragePath
@@ -39,19 +39,25 @@ namespace LiquidTrouse.Core.CacheService.Impl.InMemory
 
         public CacheObject Get<T>(CacheKey cacheKey, Func<T> GetDataCallback) where T : class
         {
-            var cacheObject = _cache.Get(cacheKey.KeyName) as CacheObject;
-            if (cacheObject == null)
+            lock (this)
             {
-                cacheObject = new CacheObject();
-                cacheObject.Data = GetDataCallback();
-                cacheObject.DataType = GetDataCallback().GetType();
-                Set(cacheKey, cacheObject);
+                var cacheObject = _cache.Get(cacheKey.KeyName) as CacheObject;
+                if (cacheObject == null)
+                {
+                    cacheObject = new CacheObject();
+                    cacheObject.Data = GetDataCallback();
+                    cacheObject.DataType = GetDataCallback().GetType();
+                    Set(cacheKey, cacheObject);
+                }
+                return cacheObject;
             }
-            return cacheObject;
         }
         public CacheObject Get(CacheKey cacheKey)
         {
-            return _cache.Get(cacheKey.KeyName) as CacheObject;
+            lock (this)
+            {
+                return _cache.Get(cacheKey.KeyName) as CacheObject;
+            }
         }
         public CacheObject Set(CacheKey cacheKey, CacheObject cacheObject)
         {
@@ -85,50 +91,85 @@ namespace LiquidTrouse.Core.CacheService.Impl.InMemory
                 }
             }
         }
+        public void Remove(CacheKeyMatchEvaluator cacheKeyMatchEvaluator)
+        {
+            lock (this)
+            {
+                var cacheObjects = GetCollection(cacheKeyMatchEvaluator);
+                foreach(KeyValuePair<CacheKey, CacheObject> keyValuePair in cacheObjects)
+                {
+                    Remove(keyValuePair.Key);
+                }
+            }
+        }
         public bool Contains(CacheKey cacheKey)
         {
-            return _cache.Contains(cacheKey.KeyName);
+            lock (this)
+            {
+                return _cache.Contains(cacheKey.KeyName);
+            }
         }
         public void Clear()
         {
-            _cache.Dispose();
+            lock (this)
+            {
+                _cache.Dispose();
+            }
         }
-        public IDictionaryEnumerator GetEnumerator()
+        public IDictionary<CacheKey, CacheObject> GetCollection()
         {
-            var hashTable = new Hashtable();
-            try
+            lock (this)
             {
-                var cacheEnum = _cache.GetEnumerator();
-                while (cacheEnum.MoveNext())
+                return GetCollection(null);
+            }
+        }
+        public IDictionary<CacheKey, CacheObject> GetCollection(CacheKeyMatchEvaluator cacheKeyMatchEvaluator)
+        {
+            lock (this)
+            {
+                var cacheObjects = new Dictionary<CacheKey, CacheObject>();
+                try
                 {
-                    var keyName = cacheEnum.Current.Key;
-                    var cacheObject = cacheEnum.Current.Value as CacheObject;
-                    hashTable.Add(new CacheKey(keyName), cacheObject);
+                    var cacheEnum = _cache.GetEnumerator();
+                    while (cacheEnum.MoveNext())
+                    {
+                        var cacheKey = new CacheKey(cacheEnum.Current.Key);
+                        var cacheObject = cacheEnum.Current.Value as CacheObject;
+                        if ((cacheKeyMatchEvaluator != null && cacheKeyMatchEvaluator(cacheKey))
+                            || cacheKeyMatchEvaluator == null)
+                        {
+                            if (!cacheObjects.ContainsKey(cacheKey))
+                            {
+                                cacheObjects.Add(cacheKey, cacheObject);
+                            }
+                        }
+                    }
                 }
+                catch (Exception ex)
+                {
+                    Utility.ErrorLog(ex.Message, ex);
+                }
+                return cacheObjects;
             }
-            catch (Exception ex)
-            {
-                Utility.ErrorLog(ex.Message, ex);
-            }
-            return hashTable.GetEnumerator();
         }
 
         private void RemovedCallback(CacheEntryRemovedArguments arguments)
         {
-            var cacheKey = arguments.CacheItem.Key;
             if (arguments.RemovedReason == CacheEntryRemovedReason.CacheSpecificEviction)
             {
+                var cacheKey = new CacheKey(arguments.CacheItem.Key);
                 Utility.DebugLog("Cache Removed Callback... cache key: " + cacheKey);
-                if (!_alreadyPersisted)
+                if (!_presistCacheObjects.ContainsKey(cacheKey))
                 {
-                    Persist();
-                    _alreadyPersisted = true;
+                    var cacheObject = arguments.CacheItem.Value as CacheObject;
+                    _presistCacheObjects.Add(cacheKey, cacheObject);
                 }
+                Persist();
             }
         }
         private void Recover()
         {
-            lock(this)
+            lock (this)
             {
                 try
                 {
@@ -166,8 +207,7 @@ namespace LiquidTrouse.Core.CacheService.Impl.InMemory
                     {
                         Utility.DebugLog("Start Persist Cache...");
                         var formatter = new BinaryFormatter();
-                        var cacheEnum = GetEnumerator();
-                        formatter.Serialize(fs, cacheEnum);
+                        formatter.Serialize(fs, _presistCacheObjects);
                     }
                 }
                 catch (Exception ex)

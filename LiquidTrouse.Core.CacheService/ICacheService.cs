@@ -13,8 +13,10 @@ namespace LiquidTrouse.Core.CacheService
         CacheObject Get<T>(CacheKey cacheKey, Func<T> GetDataCallback) where T : class;
         CacheObject Get(CacheKey cacheKey);
         void Remove(CacheKey cacheKey);
+        void Remove(CacheKeyMatchEvaluator cacheKeyMatchEvaluator);
         void Clear();
         bool Contains(CacheKey cacheKey);
-        IDictionaryEnumerator GetEnumerator();
+        IDictionary<CacheKey, CacheObject> GetCollection();
+        IDictionary<CacheKey, CacheObject> GetCollection(CacheKeyMatchEvaluator cacheKeyMatchEvaluator);
     }
 }
