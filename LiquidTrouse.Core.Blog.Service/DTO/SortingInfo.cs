@@ -37,43 +37,25 @@ namespace LiquidTrouse.Core.Blog.Service.DTO
 
         public static SortBy ParseSortBy(string sortByString)
         {
-            SortBy sortBy;
-            switch (sortByString.ToLower())
+            try
             {
-                case "title":
-                    sortBy = SortBy.Title;
-                    break;
-                case "hit":
-                    sortBy = SortBy.Hit;
-                    break;
-                case "creationdatetime":
-                    sortBy = SortBy.CreationDatetime;
-                    break;
-                case "lastmodifieddatetime":
-                    sortBy = SortBy.LastModifiedDatetime;
-                    break;
-                default:
-                    sortBy = SortBy.CreationDatetime;
-                    break;
+                return (SortBy)Enum.Parse(typeof(SortBy), sortByString, true);
             }
-            return sortBy;
+            catch
+            {
+                return SortBy.LastModifiedDatetime;
+            }
         }
         public static SortDirection ParseSortDirection(string sortDirectionString)
         {
-            SortDirection sortDirection;
-            switch (sortDirectionString.ToLower())
+            try
             {
-                case "asc":
-                    sortDirection = SortDirection.Asc;
-                    break;
-                case "desc":
-                    sortDirection = SortDirection.Desc;
-                    break;
-                default:
-                    sortDirection = SortDirection.Desc;
-                    break;
+                return (SortDirection)Enum.Parse(typeof(SortDirection), sortDirectionString, true);
             }
-            return sortDirection;
+            catch
+            {
+                return SortDirection.Desc;
+            }
         }
     }
 }
