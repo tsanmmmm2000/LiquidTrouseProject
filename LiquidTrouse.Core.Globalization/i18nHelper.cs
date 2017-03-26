@@ -10,8 +10,6 @@ namespace LiquidTrouse.Core.Globalization
 {
     public class i18nHelper
     {
-        private const string Language = "LiquidTrouse_Language";
-
         public string GetMessage(string messageKey)
         {
             var ctx = Utility.ApplicationContext;
@@ -20,7 +18,7 @@ namespace LiquidTrouse.Core.Globalization
 
         public void SetCultureInfo(CultureInfo cultureInfo)
         {
-            var cookie = new HttpCookie(Language, cultureInfo.Name)
+            var cookie = new HttpCookie(CultureConstants.Language, cultureInfo.Name)
             {
                 Path = FormsAuthentication.FormsCookiePath,
                 Expires = new DateTime(9999, 12, 31)
@@ -29,17 +27,17 @@ namespace LiquidTrouse.Core.Globalization
         }
         public CultureInfo GetCultureInfo()
         {
-            var cookie = HttpContext.Current.Request.Cookies.Get(Language);
+            var cookie = HttpContext.Current.Request.Cookies.Get(CultureConstants.Language);
             if (cookie == null)
             {
                 switch (CultureInfo.CurrentCulture.ToString().ToLower())
                 {
-                    case "zh-TW":
-                        return new CultureInfo("zh-TW");
-                    case "en":
-                        return new CultureInfo("en");
+                    case CultureConstants.ZhTw:
+                        return new CultureInfo(CultureConstants.ZhTw);
+                    case CultureConstants.En:
+                        return new CultureInfo(CultureConstants.En);
                     default:
-                        return new CultureInfo("zh-TW");
+                        return new CultureInfo(CultureConstants.ZhTw);
                 }
             }
             else
