@@ -13,3 +13,4 @@
 .modal-search .close-modal .lr { height: 50px; width: 1px; margin-left: 35px; background-color: #b84d45; transform: rotate(45deg); -ms-transform: rotate(45deg); /* IE 9 */ -webkit-transform: rotate(45deg); /* Safari and Chrome */ z-index: 1051; }
 .modal-search .close-modal .lr .rl { height: 50px; width: 1px; background-color: #b84d45; transform: rotate(90deg); -ms-transform: rotate(90deg); /* IE 9 */ -webkit-transform: rotate(90deg); /* Safari and Chrome */ z-index: 1052; }
 .modal { overflow-y: auto; }
+.modal::-webkit-scrollbar { display: none; }
