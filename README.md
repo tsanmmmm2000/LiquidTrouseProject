@@ -2,11 +2,17 @@
 This is the blog project of our brand "Liquid Trouse" which is an electronic dance music related social media.
 
 Feature
+<br/>
 -With forestage and backstage
+<br/>
 -Use hit and tag to analyze article popularity and relation
+<br/>
 -Internationalization
+<br/>
 -Keyword search
--Self design URL
+<br/>
+-Self-design URL
+<br/>
 -Sorting
 
 -----------------------------------------------------------
