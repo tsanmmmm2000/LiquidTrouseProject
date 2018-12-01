@@ -1,5 +1,5 @@
 # Liquid Trouse Project
-This is the blog project of our brand "Liquid Trouse" which is an electronic dance music related social media.
+This is the blog project of our brand <a href="https://www.facebook.com/LiquidTrouse/">Liquid Trouse</a> which is an electronic dance music related social media.
 
 Feature
 <br/>
