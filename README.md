@@ -1,5 +1,5 @@
 # Liquid Trouse Project
-This is the blog project of our brand <a href="https://www.facebook.com/LiquidTrouse/">Liquid Trouse</a> which is an electronic dance music related social media.
+It is a .NET Framework based blog for our brand <a href="https://www.facebook.com/LiquidTrouse/">Liquid Trouse</a> which is an electronic dance music related social media.
 
 Feature
 <br/>
